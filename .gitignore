@@ -85,7 +85,6 @@ tmp/
 temp/
 
 # Editor directories and files
-.vscode/
 .idea/
 *.swp
 *.swo
@@ -149,3 +148,7 @@ models/
 training-data/
 screenshots/
 videos/
+branch_structure.json
+temp_auto_push.bat
+temp_interactive_push.bat
+.gitignore
