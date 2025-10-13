@@ -1,0 +1,75 @@
+{
+  "name": "sda-training",
+  "version": "1.0.0",
+  "description": "Mechlin SDA Advanced Training Program - Full-stack development with AI, DevOps, and mobile expertise",
+  "main": "index.js",
+  "scripts": {
+    "start": "node server/index.js",
+    "dev": "nodemon server/index.js",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "format": "prettier --write .",
+    "setup": "node scripts/setup.js",
+    "docker:build": "docker-compose build",
+    "docker:up": "docker-compose up -d",
+    "docker:down": "docker-compose down",
+    "k8s:deploy": "kubectl apply -f k8s/",
+    "k8s:delete": "kubectl delete -f k8s/"
+  },
+  "keywords": [
+    "training",
+    "fullstack",
+    "react",
+    "nodejs",
+    "mobile",
+    "devops",
+    "ai",
+    "machine-learning"
+  ],
+  "author": "Mechlin Technology",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.18.2",
+    "mongoose": "^7.5.0",
+    "pg": "^8.11.3",
+    "redis": "^4.6.8",
+    "jsonwebtoken": "^9.0.2",
+    "bcryptjs": "^2.4.3",
+    "cors": "^2.8.5",
+    "helmet": "^7.0.0",
+    "morgan": "^1.10.0",
+    "winston": "^3.10.0",
+    "socket.io": "^4.7.2",
+    "dotenv": "^16.3.1",
+    "joi": "^17.9.2",
+    "swagger-ui-express": "^5.0.0",
+    "swagger-jsdoc": "^6.2.8",
+    "openai": "^4.0.0",
+    "langchain": "^0.0.200",
+    "axios": "^1.5.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1",
+    "jest": "^29.6.4",
+    "supertest": "^6.3.3",
+    "eslint": "^8.47.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-plugin-import": "^2.28.1",
+    "prettier": "^3.0.2",
+    "@types/jest": "^29.5.4"
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=8.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mechlin-tech/sda-training.git"
+  },
+  "bugs": {
+    "url": "https://github.com/mechlin-tech/sda-training/issues"
+  },
+  "homepage": "https://github.com/mechlin-tech/sda-training#readme"
+}
