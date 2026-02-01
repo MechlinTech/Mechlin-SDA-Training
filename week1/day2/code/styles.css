@@ -308,6 +308,28 @@ body {
     margin-top: var(--spacing-xl);
 }
 
+/* UI Theme  */
+.dark-theme {
+    --background-color: #0f172a;
+    --text-color: #e5e7eb;
+}
+
+.dark-theme body {
+    background-color: var(--background-color);
+    color: var(--text-color);
+}
+
+.dark-theme .header,
+.dark-theme .sidebar,
+.dark-theme .content,
+.dark-theme .card,
+.dark-theme .chart-section,
+.dark-theme .chart-container,
+.dark-theme .footer{
+    background: #020617;
+    color: var(--text-color);
+}
+
 /* Responsive Design */
 @media (max-width: 1024px) {
     .main {
@@ -323,11 +345,11 @@ body {
 
 @media (max-width: 768px) {
     .nav {
-        flex-direction: column;
+        display: flex;
         gap: var(--spacing-md);
         padding: var(--spacing-md);
     }
-    
+
     .nav-menu {
         flex-direction: column;
         gap: var(--spacing-md);
@@ -355,7 +377,6 @@ body {
     .main {
         padding: var(--spacing-md);
     }
-    
     .content {
         padding: var(--spacing-md);
     }
