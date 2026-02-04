@@ -1,0 +1,31 @@
+/* ===== Chart container safety ===== */
+
+.charts-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 24px;
+
+  width: 100%;
+  max-width: 100%;
+  overflow: hidden;
+}
+
+.charts-grid canvas {
+  width: 100% !important;
+  height: 300px !important;
+  max-width: 100%;
+}
+
+/* Prevent flex/grid overflow */
+.dashboard,
+.dashboard-content,
+.charts-section {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+/* Kill layout expansion bugs */
+* {
+  box-sizing: border-box;
+}

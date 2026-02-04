@@ -1,3 +1,4 @@
+
 // src/modules/ChartManager.js
 
 export class ChartManager {
@@ -41,10 +42,11 @@ export class ChartManager {
     try {
       this.destroyAllCharts();
 
+      // 🔴 FIX: endpoints MUST match DataContext
       const [users, revenue, orders] = await Promise.all([
-        this.dataManager.fetchData('users'),
-        this.dataManager.fetchData('revenue'),
-        this.dataManager.fetchData('orders')
+        this.dataManager.fetchData('/users'),
+        this.dataManager.fetchData('/revenue'),
+        this.dataManager.fetchData('/orders')
       ]);
 
       this.createLineChart('revenueChart', revenue);
@@ -81,7 +83,11 @@ export class ChartManager {
           fill: true
         }]
       },
-      options: { responsive: true }
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        animation:false
+      }
     }));
   }
 
@@ -101,7 +107,11 @@ export class ChartManager {
           backgroundColor: '#10b981'
         }]
       },
-      options: { responsive: true }
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        animation: false
+      }
     }));
   }
 
@@ -120,7 +130,11 @@ export class ChartManager {
           backgroundColor: ['#3b82f6', '#10b981', '#f59e0b']
         }]
       },
-      options: { responsive: true }
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        animation: false
+      }
     }));
   }
 
@@ -149,7 +163,11 @@ export class ChartManager {
           }
         ]
       },
-      options: { responsive: true }
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        animation: false
+      }
     }));
   }
 }
