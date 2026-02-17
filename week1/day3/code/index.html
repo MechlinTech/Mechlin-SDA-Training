@@ -2,10 +2,64 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>JS Advanced Dashboard</title>
-    <script type="module" src="./src/app.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advanced JS Dashboard</title>
+
+    <style>
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f5f7fb;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .dashboard-container {
+            max-width: 1100px;
+            margin: auto;
+        }
+
+        .content-header {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        button {
+            padding: 8px 14px;
+            border: none;
+            border-radius: 6px;
+            background: #2563eb;
+            color: white;
+            cursor: pointer;
+        }
+
+        .charts-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px,1fr));
+            gap: 20px;
+        }
+
+        .chart-container {
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            height: 320px;
+        }
+
+        .performance-panel {
+            margin-top: 25px;
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+        }
+    </style>
 </head>
 <body>
-    <div class="content"></div>
+
+<div class="content"></div>
+
+<!-- IMPORTANT: type="module" -->
+<script type="module" src="./src/app.js"></script>
+
 </body>
 </html>

@@ -26,31 +26,39 @@ class DashboardApp {
     async setupUI() {
         // Create dashboard HTML structure
         const dashboardHTML = `
-            <div class="dashboard-container">
-                <div class="charts-grid">
-                    <div class="chart-container">
-                        <h3>Revenue Trend</h3>
-                        <canvas id="revenueChart"></canvas>
-                    </div>
-                    <div class="chart-container">
-                        <h3>User Growth</h3>
-                        <canvas id="userChart"></canvas>
-                    </div>
-                    <div class="chart-container">
-                        <h3>Order Distribution</h3>
-                        <canvas id="orderChart"></canvas>
-                    </div>
-                    <div class="chart-container">
-                        <h3>Performance Overview</h3>
-                        <canvas id="performanceChart"></canvas>
-                    </div>
-                </div>
-                <div class="performance-panel">
-                    <h3>Performance Metrics</h3>
-                    <div id="performance-metrics"></div>
-                </div>
+    <div class="dashboard-container">
+
+        <div class="content-header"></div>
+
+        <div id="charts-grid" class="charts-grid">
+            <div class="chart-container">
+                <h3>Revenue Trend</h3>
+                <canvas id="revenueChart"></canvas>
             </div>
-        `;
+
+            <div class="chart-container">
+                <h3>User Growth</h3>
+                <canvas id="userChart"></canvas>
+            </div>
+
+            <div class="chart-container">
+                <h3>Order Distribution</h3>
+                <canvas id="orderChart"></canvas>
+            </div>
+
+            <div class="chart-container">
+                <h3>Performance Overview</h3>
+                <canvas id="performanceChart"></canvas>
+            </div>
+        </div>
+
+        <div class="performance-panel">
+            <h3>Performance Metrics</h3>
+            <div id="performance-metrics"></div>
+        </div>
+
+    </div>
+    `;
         
         document.querySelector('.content').innerHTML = dashboardHTML;
     }
