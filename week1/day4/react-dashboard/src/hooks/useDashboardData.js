@@ -1,5 +1,6 @@
-import { useEffect, useReducer, useCallback } from "react";
+import { useState, useEffect, useReducer, useCallback } from "react";
 import { useDataContext } from "../contexts/DataContext";
+import { fetchData } from "../services/api";
 
 const initialState = {
   loading: true,
@@ -37,34 +38,47 @@ function reducer(state, action) {
 }
 
 export function useDashboardData() {
-  const { fetchData } = useDataContext();
-  const [state, dispatch] = useReducer(reducer, initialState);
+  const [data, setData] = useState({
+    users: null,
+    revenue: null,
+    orders: null
+  });
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [lastUpdated, setLastUpdated] = useState(null);
 
   const loadData = useCallback(async () => {
-    dispatch({ type: "SET_LOADING" });
-
     try {
+      setLoading(true);
       const [users, revenue, orders] = await Promise.all([
-        fetchData("/api/users"),
-        fetchData("/api/revenue"),
-        fetchData("/api/orders")
+        fetchData("/users"),
+        fetchData("/revenue"),
+        fetchData("/orders")
       ]);
 
-      dispatch({
-        type: "SET_DATA",
-        payload: { users, revenue, orders }
-      });
-    } catch (error) {
-      dispatch({
-        type: "SET_ERROR",
-        payload: error.message
-      });
+      setData({ users, revenue, orders });
+      setError(null);
+      setLastUpdated(new Date());
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
     }
-  }, [fetchData]);
+  }, []);
 
   useEffect(() => {
+  const interval = setInterval(() => {
     loadData();
+  }, 5000); // refresh every 5 sec
+
+  return () => clearInterval(interval);
   }, [loadData]);
 
-  return { ...state, refetch: loadData };
+  return {
+  loading,
+  error,
+  data,
+  refetch: loadData,
+  lastUpdated
+  };
 }

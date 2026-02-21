@@ -15,8 +15,20 @@ export const MetricsCard = memo(function MetricsCard({
     return values.reduce((sum, val) => sum + val, 0);
   }, [values]);
 
+  const [prevTotal, setPrevTotal] = React.useState(total);
+  const [highlight, setHighlight] = React.useState(false);
+
+  React.useEffect(() => {
+    if (total !== prevTotal) {
+      setHighlight(true);
+      setTimeout(() => setHighlight(false), 800);
+      setPrevTotal(total);
+    }
+  }, [total, prevTotal]);
+
+
   const cardStyle = {
-    background: theme.cardBg,
+    background: highlight ? "#bbf7d0" : theme.cardBg,  
     color: theme.text,
     padding: "20px",
     borderRadius: "12px",

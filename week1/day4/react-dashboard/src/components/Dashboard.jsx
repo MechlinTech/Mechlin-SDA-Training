@@ -6,11 +6,24 @@ import { useTheme } from "../contexts/ThemeContext";
 
 export function Dashboard() {
 
-  const { loading, error, data, refetch } = useDashboardData();
+  const { loading, error, data, refetch, lastUpdated } = useDashboardData();
   const perf = usePerformance("Dashboard");
   const theme = useTheme();
 
-  if (loading) return <h2>Loading Dashboard...</h2>;
+  if (loading) {
+    return (
+      <div style={{ padding: "20px" }}>
+        <h2>Loading...</h2>
+        <div style={{
+          height: "120px",
+          background: "#e5e7eb",
+          borderRadius: "8px",
+          marginTop: "20px",
+          animation: "pulse 1.5s infinite"
+        }} />
+      </div>
+    );
+  }  
   if (error) return <h2>Error: {error}</h2>;
 
   return (
@@ -52,6 +65,20 @@ export function Dashboard() {
     >
       Refresh Data
     </button>
+    <div style={{
+      marginBottom: "15px",
+      padding: "8px",
+      background: "#dcfce7",
+      color: "#166534",
+      borderRadius: "6px",
+      fontWeight: "bold"
+    }}>
+      🟢 Live Data (Auto Refreshing Every 5s)
+    </div>
+    <p style={{ fontSize: "14px", marginBottom: "10px" }}>
+      Last updated: {lastUpdated?.toLocaleTimeString()}
+    </p>
+
 
     {/* Metrics Grid */}
     <div
@@ -63,19 +90,19 @@ export function Dashboard() {
     >
       <MetricsCard
         title="Total Users"
-        values={data?.users || []}
+        values={[data?.users?.total || 0]}
         icon="👥"
       />
 
       <MetricsCard
         title="Total Revenue"
-        values={data?.revenue || []}
+        values={[data?.revenue?.total || 0]}
         icon="💰"
       />
 
       <MetricsCard
         title="Total Orders"
-        values={data?.orders || []}
+        values={[data?.orders?.total || 0]}     
         icon="📦"
       />
     </div>
@@ -102,4 +129,3 @@ export function Dashboard() {
   </div>
   );
 }
-  

@@ -1,0 +1,11 @@
+{
+  "users": { "total": 2000, "change": 10 },
+  "revenue": {
+    "total": 45678,
+    "change": 8
+  },
+  "orders": {
+    "total": 567,
+    "change": -2
+  }
+}
