@@ -4,7 +4,6 @@
 Establish development workflow and create foundation for advanced frontend development.
 
 ## User Stories
-
 ### Epic 1: Development Environment Setup
 - [ ] **US-001**: As a developer, I want to set up Git workflow so that I can collaborate effectively
 - [ ] **US-002**: As a developer, I want to create proper repository structure so that the project is organized
