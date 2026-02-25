@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advanced Dashboard - Tailwind</title>
+    <!-- Tailwind CDN for quick prototyping -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Keep original project stylesheet after Tailwind so custom CSS variables and theme rules remain effective -->
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body class="font-sans bg-[color:var(--background-color)] text-[color:var(--text-color)]">
+    <header class="header bg-[color:var(--surface-color)] shadow sticky top-0 z-50">
+        <nav class="nav flex items-center justify-between px-6 py-4 max-w-6xl mx-auto" role="navigation" aria-label="Main navigation">
+            <div class="nav-brand flex items-center gap-3">
+                <h1 class="text-xl font-bold text-[color:var(--primary-color)]">📊 Advanced Dashboard</h1>
+            </div>
+            <ul class="nav-menu flex gap-6">
+                <li><a class="hover:text-[color:var(--primary-color)]" href="#home">Home</a></li>
+                <li><a class="hover:text-[color:var(--primary-color)]" href="#analytics">Analytics</a></li>
+                <li><a class="hover:text-[color:var(--primary-color)]" href="#settings">Settings</a></li>
+            </ul>
+        </nav>
+    </header>   
+    <main class="main grid lg:grid-cols-[280px_1fr] gap-6 min-h-[calc(100vh-80px)] max-w-6xl mx-auto p-6">
+        <aside class="sidebar bg-[color:var(--surface-color)] rounded-[var(--border-radius)] shadow p-6 sticky top-24">
+            <nav class="sidebar-nav">
+                <ul>
+                    <li class="mb-2"><a class="block px-4 py-3 rounded-sm font-medium" href="#dashboard">📈 Dashboard</a></li>
+                    <li class="mb-2"><a class="block px-4 py-3 rounded-sm font-medium" href="#users">👥 Users</a></li>
+                    <li class="mb-2"><a class="block px-4 py-3 rounded-sm font-medium" href="#reports">📋 Reports</a></li>
+                    <li class="mb-2"><a class="block px-4 py-3 rounded-sm font-medium" href="#analytics">📊 Analytics</a></li>
+                    <li class="mb-2"><a class="block px-4 py-3 rounded-sm font-medium" href="#settings">⚙️ Settings</a></li>
+                </ul>
+            </nav>
+        </aside>
+        
+        <section class="content bg-[color:var(--surface-color)] rounded-[var(--border-radius)] shadow p-8 min-h-[600px]" id="dashboard">
+            <div class="content-header mb-6 pb-4 border-b border-[color:var(--border-color)]" id="home">
+                <h2 class="text-2xl font-extrabold text-[color:var(--text-color)]">Dashboard Overview</h2>
+                <p class="text-[color:var(--text-muted)] mt-2">Welcome to your advanced dashboard with modern CSS features</p>
+            </div>
+            
+            <div class="dashboard-grid">
+                <div class="card card-primary">
+                    <div class="card-icon">👥</div>
+                    <h3>Total Users</h3>
+                    <p class="metric">1,234</p>
+                    <p class="metric-change positive">+12% from last month</p>
+                </div>
+                
+                <div class="card card-success">
+                    <div class="card-icon">💰</div>
+                    <h3>Revenue</h3>
+                    <p class="metric">$45,678</p>
+                    <p class="metric-change positive">+8% from last month</p>
+                </div>
+                
+                <div class="card card-warning">
+                    <div class="card-icon">📦</div>
+                    <h3>Orders</h3>
+                    <p class="metric">567</p>
+                    <p class="metric-change negative">-3% from last month</p>
+                </div>
+                
+                <div class="card card-info">
+                    <div class="card-icon">📈</div>
+                    <h3>Growth Rate</h3>
+                    <p class="metric">23.5%</p>
+                    <p class="metric-change positive">+5% from last month</p>
+                </div>
+            </div>
+            
+            <div class="charts-section mt-6">
+                <div class="chart-container bg-[color:var(--background-color)] rounded-[var(--border-radius)] p-6 border border-[color:var(--border-color)]" id="analytics">
+                    <h3 class="text-xl font-semibold mb-4 text-[color:var(--text-color)]">Performance Metrics</h3>
+                    <div class="chart-placeholder bg-[color:var(--surface-color)] rounded-sm p-6 text-center text-[color:var(--text-muted)] border-2 border-dashed border-[color:var(--border-color)]">
+                        <p>Chart will be implemented in Day 3 with JavaScript</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Placeholder sections referenced by navigation links -->
+    <section id="users" class="content-small">
+        <div class="content" aria-labelledby="users-heading">
+            <h3 id="users-heading">Users</h3>
+            <p>Users overview and quick stats will appear here.</p>
+        </div>
+    </section>
+
+    <section id="reports" class="content-small">
+        <div class="content" aria-labelledby="reports-heading">
+            <h3 id="reports-heading">Reports</h3>
+            <p>Reports and exports placeholder.</p>
+        </div>
+    </section>
+
+    <section id="settings" class="content-small">
+        <div class="content" aria-labelledby="settings-heading">
+            <h3 id="settings-heading">Settings</h3>
+            <p>App settings and preferences.</p>
+        </div>
+    </section>
+    
+    <footer class="footer bg-[color:var(--text-color)] text-white text-center p-4 mt-6">
+        <p>&copy; 2024 Advanced Dashboard. Built with Tailwind + project CSS.</p>
+    </footer>
+    
+    <script src="script.js"></script>
+</body>
+</html>
