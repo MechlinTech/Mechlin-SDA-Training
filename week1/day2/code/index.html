@@ -10,8 +10,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
-    <header class="header">
-        <nav class="nav">
+    <header class="header" role="banner">
+        <nav class="nav" role="navigation" aria-label="Main navigation">
             <div class="nav-brand">
                 <h1>📊 Advanced Dashboard</h1>
             </div>
@@ -36,8 +36,8 @@
             </nav>
         </aside>
         
-        <section class="content">
-            <div class="content-header">
+        <section class="content" id="dashboard">
+            <div class="content-header" id="home">
                 <h2>Dashboard Overview</h2>
                 <p>Welcome to your advanced dashboard with modern CSS features</p>
             </div>
@@ -73,7 +73,7 @@
             </div>
             
             <div class="charts-section">
-                <div class="chart-container">
+                <div class="chart-container" id="analytics">
                     <h3>Performance Metrics</h3>
                     <div class="chart-placeholder">
                         <p>Chart will be implemented in Day 3 with JavaScript</p>
@@ -82,6 +82,28 @@
             </div>
         </section>
     </main>
+    
+    <!-- Placeholder sections referenced by navigation links -->
+    <section id="users" class="content-small">
+        <div class="content" aria-labelledby="users-heading">
+            <h3 id="users-heading">Users</h3>
+            <p>Users overview and quick stats will appear here.</p>
+        </div>
+    </section>
+
+    <section id="reports" class="content-small">
+        <div class="content" aria-labelledby="reports-heading">
+            <h3 id="reports-heading">Reports</h3>
+            <p>Reports and exports placeholder.</p>
+        </div>
+    </section>
+
+    <section id="settings" class="content-small">
+        <div class="content" aria-labelledby="settings-heading">
+            <h3 id="settings-heading">Settings</h3>
+            <p>App settings and preferences.</p>
+        </div>
+    </section>
     
     <footer class="footer">
         <p>&copy; 2024 Advanced Dashboard. Built with modern CSS features.</p>
