@@ -7,6 +7,7 @@
     --error-color: #ef4444;
     --info-color: #06b6d4;
     --background-color: #f8fafc;
+    --surface-color: #ffffff;
     --text-color: #1e293b;
     --text-muted: #64748b;
     --border-color: #e2e8f0;
@@ -21,6 +22,17 @@
     --spacing-lg: 1.5rem;
     --spacing-xl: 2rem;
     --spacing-2xl: 3rem;
+}
+
+/* Dark theme variable overrides */
+body.dark-theme {
+    --background-color: #071026;
+    --surface-color: #0f1724;
+    --text-color: #e6eef8;
+    --text-muted: #9aa6b2;
+    --border-color: #1f2a37;
+    --primary-color: #60a5fa;
+    --shadow: 0 4px 12px rgba(0,0,0,0.35);
 }
 
 /* Reset and Base Styles */
@@ -40,7 +52,7 @@ body {
 
 /* Header Styles */
 .header {
-    background: white;
+    background: var(--surface-color);
     box-shadow: var(--shadow);
     position: sticky;
     top: 0;
@@ -116,7 +128,7 @@ body {
 
 /* Sidebar */
 .sidebar {
-    background: white;
+    background: var(--surface-color);
     border-radius: var(--border-radius);
     box-shadow: var(--shadow);
     padding: var(--spacing-lg);
@@ -153,7 +165,7 @@ body {
 
 /* Content Area */
 .content {
-    background: white;
+    background: var(--surface-color);
     border-radius: var(--border-radius);
     box-shadow: var(--shadow);
     padding: var(--spacing-xl);
@@ -187,7 +199,7 @@ body {
 }
 
 .card {
-    background: white;
+    background: var(--surface-color);
     padding: var(--spacing-xl);
     border-radius: var(--border-radius);
     box-shadow: var(--shadow);
@@ -291,12 +303,51 @@ body {
 }
 
 .chart-placeholder {
-    background: white;
+    background: var(--surface-color);
     border-radius: var(--border-radius-sm);
     padding: var(--spacing-xl);
     text-align: center;
     color: var(--text-muted);
     border: 2px dashed var(--border-color);
+}
+
+/* Theme toggle button styling (if JS injects it) */
+.theme-toggle {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    font-size: 1.2rem;
+    cursor: pointer;
+    box-shadow: var(--shadow);
+    transition: var(--transition);
+    z-index: 1000;
+}
+
+/* Mobile menu button */
+.mobile-menu-btn {
+    display: none;
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: var(--text-color);
+}
+
+.nav-menu.mobile-open {
+    display: flex !important;
+    flex-direction: column;
+    gap: var(--spacing-md);
+}
+
+@media (max-width: 768px) {
+    .mobile-menu-btn { display: block; }
+    .nav-menu { display: none; }
 }
 
 /* Footer */
