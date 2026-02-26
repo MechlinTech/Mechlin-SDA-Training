@@ -12,6 +12,10 @@ document.addEventListener('DOMContentLoaded', function() {
     initializeSidebar();
     initializeAnimations();
     initializeResponsiveFeatures();
+    // initialize additional features after DOM ready
+    initializePerformanceMonitoring();
+    initializeKeyboardNavigation();
+    initializeThemeSwitcher();
 });
 
 /**
@@ -229,40 +233,44 @@ function initializeKeyboardNavigation() {
  * Add theme switching functionality
  */
 function initializeThemeSwitcher() {
-    // Create theme toggle button
+    // Create theme toggle button with accessibility and persistence
     const themeToggle = document.createElement('button');
-    themeToggle.innerHTML = '🌙';
     themeToggle.className = 'theme-toggle';
-    themeToggle.style.cssText = `
-        position: fixed;
-        top: 20px;
-        right: 20px;
-        background: var(--primary-color);
-        color: white;
-        border: none;
-        border-radius: 50%;
-        width: 50px;
-        height: 50px;
-        font-size: 1.2rem;
-        cursor: pointer;
-        box-shadow: var(--shadow);
-        transition: var(--transition);
-        z-index: 1000;
-    `;
-    
+    themeToggle.setAttribute('aria-label', 'Toggle dark mode');
+    themeToggle.setAttribute('title', 'Toggle dark mode');
+
+    // Apply persisted theme (if any)
+    const stored = localStorage.getItem('theme');
+    if (stored === 'dark') {
+        document.body.classList.add('dark-theme');
+        themeToggle.innerHTML = '☀️';
+        themeToggle.setAttribute('aria-pressed', 'true');
+    } else {
+        document.body.classList.remove('dark-theme');
+        themeToggle.innerHTML = '🌙';
+        themeToggle.setAttribute('aria-pressed', 'false');
+    }
+
     document.body.appendChild(themeToggle);
-    
-    // Toggle theme
+
+    // Toggle theme with persistence
     themeToggle.addEventListener('click', () => {
-        document.body.classList.toggle('dark-theme');
-        themeToggle.innerHTML = document.body.classList.contains('dark-theme') ? '☀️' : '🌙';
+        const isDark = document.body.classList.toggle('dark-theme');
+        themeToggle.innerHTML = isDark ? '☀️' : '🌙';
+        themeToggle.setAttribute('aria-pressed', isDark ? 'true' : 'false');
+        localStorage.setItem('theme', isDark ? 'dark' : 'light');
+    });
+
+    // Keyboard activation support
+    themeToggle.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            themeToggle.click();
+        }
     });
 }
 
-// Initialize additional features
-initializePerformanceMonitoring();
-initializeKeyboardNavigation();
-initializeThemeSwitcher();
+// (Now initialized on DOMContentLoaded)
 
 // Export functions for testing
 if (typeof module !== 'undefined' && module.exports) {
