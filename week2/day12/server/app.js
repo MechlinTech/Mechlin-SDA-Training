@@ -5,6 +5,8 @@ const session = require('express-session');
 const passport = require('./middleware/oauth');
 const authRoutes = require('./routes/authRoutes');
 const { AppError } = require('./middleware/errorHandler');
+const { setupSwagger } = require('./middleware/swagger');
+const userRoutes = require('./routes/userRoutes');
 
 const app = express();
 
@@ -50,7 +52,8 @@ app.get('/', (req, res) => {
 });
 
 app.use('/api/v1/auth', authRoutes);
-
+app.use('/api/v1/users', userRoutes);
+setupSwagger(app);
 // ----------------------
 // 404 HANDLER
 // ----------------------
