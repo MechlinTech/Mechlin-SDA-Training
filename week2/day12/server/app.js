@@ -7,6 +7,10 @@ const authRoutes = require('./routes/authRoutes');
 const { AppError } = require('./middleware/errorHandler');
 const { setupSwagger } = require('./middleware/swagger');
 const userRoutes = require('./routes/userRoutes');
+const { monitoringMiddleware, healthCheck, metrics } = require('./middleware/monitoring');
+const productRoutes = require('./routes/productRoutes');
+const orderRoutes = require('./routes/orderRoutes');
+const analyticsRoutes = require('./routes/analyticsRoutes');
 
 const app = express();
 
@@ -41,6 +45,11 @@ mongoose
     process.exit(1);
   });
 
+app.use(monitoringMiddleware);
+app.get('/api/v1/health', healthCheck);
+app.get('/api/v1/metrics', metrics);
+
+
 // ----------------------
 // ROUTES
 // ----------------------
@@ -53,6 +62,9 @@ app.get('/', (req, res) => {
 
 app.use('/api/v1/auth', authRoutes);
 app.use('/api/v1/users', userRoutes);
+app.use('/api/v1/products', productRoutes);
+app.use('/api/v1/orders', orderRoutes);
+app.use('/api/v1/analytics', analyticsRoutes);
 setupSwagger(app);
 // ----------------------
 // 404 HANDLER
@@ -69,9 +81,10 @@ app.use((err, req, res, next) => {
 
   res.status(err.statusCode || 500).json({
     success: false,
-    message: err.message || 'Internal Server Error',
-    errors: err.errors || null,
+    error: {
+      message: err.message,
+      details: err.errors || null
+    }
   });
 });
-
 module.exports = app;
