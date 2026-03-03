@@ -11,8 +11,22 @@ const { monitoringMiddleware, healthCheck, metrics } = require('./middleware/mon
 const productRoutes = require('./routes/productRoutes');
 const orderRoutes = require('./routes/orderRoutes');
 const analyticsRoutes = require('./routes/analyticsRoutes');
-
+const { getEnvironment } = require('./config/environments');
+const systemHealthCheck = require('./monitoring/health-check');
+const envConfig = getEnvironment();
 const app = express();
+
+const PORT = envConfig.port;
+const secretsManager = require('./config/secrets');
+
+// Validate required secrets on startup
+try {
+  secretsManager.validateSecrets();
+  console.log('✅ All required secrets are configured');
+} catch (error) {
+  console.error('❌ Secret validation failed:', error.message);
+  process.exit(1); // Stop app immediately
+}
 
 // ----------------------
 // MIDDLEWARE
@@ -38,7 +52,7 @@ app.use(passport.session());
 // DATABASE CONNECTION
 // ----------------------
 mongoose
-  .connect(process.env.MONGO_URI)
+  .connect(envConfig.database.mongodb.uri)
   .then(() => console.log('✅ MongoDB Connected'))
   .catch((err) => {
     console.error('❌ MongoDB Connection Failed:', err);
@@ -46,9 +60,15 @@ mongoose
   });
 
 app.use(monitoringMiddleware);
-app.get('/api/v1/health', healthCheck);
+app.get('/api/v1/system-health', async (req, res) => {
+  const result = await systemHealthCheck.performHealthCheck();
+  res.json(result);
+});
 app.get('/api/v1/metrics', metrics);
-
+app.get('/api/v1/health', async (req, res) => {
+  const result = await healthCheck.performHealthCheck();
+  res.json(result);
+});
 
 // ----------------------
 // ROUTES
