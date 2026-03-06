@@ -8,7 +8,7 @@ RUN npm ci --only=production
 COPY . .
 
 RUN addgroup -S nodejs && adduser -S nodeuser -G nodejs
-USER nodeuser
+
 
 EXPOSE 5000
 

@@ -1,0 +1,47 @@
+# k8s/deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sda-training-app
+  namespace: sda-training
+
+spec:
+  replicas: 1
+
+  selector:
+    matchLabels:
+      app: sda-training
+
+  template:
+    metadata:
+      labels:
+        app: sda-training
+
+    spec:
+      containers:
+        - name: app
+          image: sda-training:latest
+          imagePullPolicy: Never
+
+          ports:
+            - containerPort: 5000
+
+          env:
+            - name: NODE_ENV
+              value: "production"
+            - name: PORT
+              value: "5000"
+
+          livenessProbe:
+            httpGet:
+              path: /api/v1/health
+              port: 5000
+            initialDelaySeconds: 20
+            periodSeconds: 10
+
+          readinessProbe:
+            httpGet:
+              path: /api/v1/health
+              port: 5000
+            initialDelaySeconds: 10
+            periodSeconds: 5
