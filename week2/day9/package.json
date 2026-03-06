@@ -1,0 +1,29 @@
+{
+  "name": "day9",
+  "version": "1.0.0",
+  "description": "- Master Express.js framework and middleware architecture\r - Implement custom middleware for authentication, validation, and logging\r - Build robust error handling and validation systems\r - Create modular route handlers with proper separation of concerns\r - Optimize Express applications for production use",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "bcryptjs": "^3.0.3",
+    "compression": "^1.8.1",
+    "cors": "^2.8.6",
+    "express": "^5.2.1",
+    "express-rate-limit": "^8.3.0",
+    "express-validator": "^7.3.1",
+    "helmet": "^8.1.0",
+    "jsonwebtoken": "^9.0.3",
+    "morgan": "^1.10.1",
+    "uuid": "^13.0.0",
+    "winston": "^3.19.0"
+  }
+}
