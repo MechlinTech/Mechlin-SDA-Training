@@ -1,4 +1,4 @@
-# Day 1: SDLC & GitHub Mastery
+# Day 1 Setup Guide
 
 ## 🎯 Learning Objectives
 
