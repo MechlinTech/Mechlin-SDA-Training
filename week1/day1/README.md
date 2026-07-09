@@ -1,4 +1,8 @@
-# Practice Conflict Version A
+
+# Practice Conflict Resolution
+
+This section demonstrates successful manual merge conflict resolution.
+
 # Day 1 Setup Guide
 
 ## 🎯 Learning Objectives
