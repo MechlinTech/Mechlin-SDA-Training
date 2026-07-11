@@ -2,7 +2,7 @@
 # Practice Conflict Resolution
 
 This section demonstrates successful manual merge conflict resolution.
-
+git branch -d practice-conflict-a
 # Day 1 Setup Guide
 
 ## 🎯 Learning Objectives
