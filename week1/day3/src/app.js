@@ -144,33 +144,40 @@ class DashboardApp {
     setupEventListeners() {
 
         const header = document.querySelector(".content-header");
-
+    
+        // ==========================
         // Refresh Button
+        // ==========================
         const refreshBtn = document.createElement("button");
-
+    
         refreshBtn.textContent = "Refresh";
-
+    
         refreshBtn.addEventListener("click", () => {
-
             this.refreshDashboard();
-
         });
-
-        header.appendChild(refreshBtn);
-
-        // Toggle Performance Button
+    
+        // ==========================
+        // Performance Button
+        // ==========================
         const performanceBtn = document.createElement("button");
-
+    
         performanceBtn.textContent = "Performance";
-
+    
         performanceBtn.addEventListener("click", () => {
-
             this.togglePerformancePanel();
-
         });
-
-        header.appendChild(performanceBtn);
-
+    
+        // ==========================
+        // Button Group
+        // ==========================
+        const buttonGroup = document.createElement("div");
+    
+        buttonGroup.appendChild(refreshBtn);
+    
+        buttonGroup.appendChild(performanceBtn);
+    
+        header.appendChild(buttonGroup);
+    
     }
 
     /**
