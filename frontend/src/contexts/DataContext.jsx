@@ -1,9 +1,16 @@
-import { createContext, useContext, useState } from "react";
+import {
+  createContext,
+  useContext,
+  useEffect,
+  useState,
+  useCallback,
+} from "react";
+
+import dashboardService from "../services/DashboardService";
 
 const DataContext = createContext();
 
 export function DataProvider({ children }) {
-
   const [metrics, setMetrics] = useState({
     users: 0,
     revenue: 0,
@@ -13,27 +20,52 @@ export function DataProvider({ children }) {
     revenueHistory: [],
   });
 
-  const [loading, setLoading] = useState(false);
-
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  return (
+  const loadDashboard = useCallback(async () => {
+    try {
+      setLoading(true);
+      setError(null);
 
+      const dashboard = await dashboardService.getDashboardMetrics();
+
+      setMetrics(dashboard);
+    } catch (err) {
+      console.error("Dashboard Load Error:", err);
+      setError(err.message || "Failed to load dashboard");
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
+  const refreshDashboard = useCallback(async () => {
+    dashboardService.clearCache();
+    await loadDashboard();
+  }, [loadDashboard]);
+
+  useEffect(() => {
+    loadDashboard();
+  }, [loadDashboard]);
+
+  return (
     <DataContext.Provider
       value={{
         metrics,
         setMetrics,
+
         loading,
         setLoading,
+
         error,
         setError,
+
+        refreshDashboard,
       }}
     >
       {children}
     </DataContext.Provider>
-
   );
-
 }
 
 export function useData() {

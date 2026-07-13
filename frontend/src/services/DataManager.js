@@ -1,155 +1,213 @@
 /**
  * ============================================================
- * DataManager
+ * DataManager (Day 5 Enhanced)
  * ------------------------------------------------------------
  * Responsibilities:
- * 1. Fetch data from API
- * 2. Cache API responses
- * 3. Notify subscribed modules whenever data changes
- * 4. Clear cache when required
+ * 1. Fetch API data
+ * 2. Cache responses with TTL
+ * 3. Retry failed requests
+ * 4. Abort long-running requests
+ * 5. CRUD operations
+ * 6. Notify subscribers
  * ============================================================
  */
 
 export class DataManager {
-    /**
-     * Constructor
-     * Runs automatically whenever we create:
-     *
-     * const dataManager = new DataManager("/api");
-     */
-    constructor(apiUrl) {
+  constructor(apiUrl, options = {}) {
+    this.apiUrl = apiUrl;
 
-        // Base URL of our backend
-        this.apiUrl = apiUrl;
+    this.cache = new Map();
+    this.subscribers = new Set();
 
-        // Cache stores API responses
-        // Key   -> endpoint
-        // Value -> API response
-        this.cache = new Map();
+    this.timeout = options.timeout || 10000;
+    this.retryAttempts = options.retryAttempts || 3;
+    this.retryDelay = options.retryDelay || 1000;
+    this.cacheTTL = options.cacheTTL || 5 * 60 * 1000;
+  }
 
-        // Stores callback functions
-        // These callbacks are notified whenever new data arrives
-        this.subscribers = new Set();
+  getCacheKey(endpoint, options = {}) {
+    return `${endpoint}-${JSON.stringify(options)}`;
+  }
+
+  getCachedData(cacheKey) {
+    const cached = this.cache.get(cacheKey);
+
+    if (!cached) return null;
+
+    const expired =
+      Date.now() - cached.timestamp > this.cacheTTL;
+
+    if (expired) {
+      this.cache.delete(cacheKey);
+      return null;
     }
 
-    /**
-     * Fetch data from server
-     *
-     * endpoint example:
-     * "/users"
-     * "/orders"
-     * "/products"
-     */
-    async fetchData(endpoint, options = {}) {
+    return cached.data;
+  }
 
-        // Create a unique cache key
-        const cacheKey = `${endpoint}-${JSON.stringify(options)}`;
+  saveCache(cacheKey, data) {
+    this.cache.set(cacheKey, {
+      data,
+      timestamp: Date.now(),
+    });
+  }
 
-        /**
-         * STEP 1
-         * If data already exists in cache,
-         * return it immediately.
-         */
-        if (this.cache.has(cacheKey)) {
-            console.log("✅ Returning Cached Data");
-            return this.cache.get(cacheKey);
+  async fetchWithRetry(url, options, attempt = 1) {
+    const controller = new AbortController();
+
+    const timeoutId = setTimeout(() => {
+      controller.abort();
+    }, this.timeout);
+
+    try {
+      const response = await fetch(url, {
+        ...options,
+        signal: controller.signal,
+      });
+
+      clearTimeout(timeoutId);
+
+      if (!response.ok) {
+        throw new Error(`HTTP Error ${response.status}`);
+      }
+
+      return response;
+    } catch (error) {
+      clearTimeout(timeoutId);
+
+      const shouldRetry =
+        error.name === "AbortError" ||
+        error.message.includes("500") ||
+        error.message.includes("502") ||
+        error.message.includes("503");
+
+      if (
+        shouldRetry &&
+        attempt < this.retryAttempts
+      ) {
+        console.warn(
+          `Retry ${attempt}/${this.retryAttempts}`
+        );
+
+        await this.delay(
+          this.retryDelay * Math.pow(2, attempt - 1)
+        );
+
+        return this.fetchWithRetry(
+          url,
+          options,
+          attempt + 1
+        );
+      }
+
+      throw error;
+    }
+  }
+
+  delay(ms) {
+    return new Promise((resolve) => setTimeout(resolve, ms));
+  }
+
+  async request(endpoint, options = {}) {
+    const cacheKey = this.getCacheKey(endpoint, options);
+
+    const useCache =
+      !options.method || options.method === "GET";
+
+    if (useCache) {
+      const cached = this.getCachedData(cacheKey);
+
+      if (cached) {
+        console.log("✅ Cache Hit");
+        return cached;
+      }
+    }
+
+    try {
+      const response = await this.fetchWithRetry(
+        `${this.apiUrl}${endpoint}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            ...(options.headers || {}),
+          },
+          ...options,
         }
+      );
 
-        try {
+      const data = await response.json();
 
-            /**
-             * STEP 2
-             * Fetch data from API
-             */
-            const response = await fetch(`${this.apiUrl}${endpoint}`, {
+      if (useCache) {
+        this.saveCache(cacheKey, data);
+      }
 
-                headers: {
-                    "Content-Type": "application/json",
-                    ...options.headers
-                },
+      this.notifySubscribers(endpoint, data);
 
-                ...options
-            });
-
-            /**
-             * STEP 3
-             * Check if request was successful
-             */
-            if (!response.ok) {
-                throw new Error(`HTTP Error : ${response.status}`);
-            }
-
-            /**
-             * STEP 4
-             * Convert JSON into JavaScript Object
-             */
-            const data = await response.json();
-
-            /**
-             * STEP 5
-             * Save response inside cache
-             */
-            this.cache.set(cacheKey, data);
-
-            /**
-             * STEP 6
-             * Notify every subscribed module
-             */
-            this.notifySubscribers(endpoint, data);
-
-            return data;
-
-        } catch (error) {
-
-            console.error("❌ Data Fetch Error :", error);
-
-            throw error;
-        }
+      return data;
+    } catch (error) {
+      console.error("API Error:", error);
+      throw error;
     }
+  }
+  async fetchData(endpoint, options = {}) {
+    return this.request(endpoint, options);
+  }
 
-    /**
-     * Register a callback
-     *
-     * Example:
-     * ChartManager subscribes here
-     */
-    subscribe(callback) {
+  // --------------------
+  // CRUD METHODS
+  // --------------------
 
-        this.subscribers.add(callback);
+  get(endpoint) {
+    return this.request(endpoint);
+  }
 
-        /**
-         * Return an unsubscribe function
-         *
-         * Example:
-         * const unsubscribe = subscribe(...)
-         *
-         * unsubscribe();
-         */
-        return () => this.subscribers.delete(callback);
-    }
+  post(endpoint, body) {
+    return this.request(endpoint, {
+      method: "POST",
+      body: JSON.stringify(body),
+    });
+  }
 
-    /**
-     * Notify every subscriber
-     * whenever fresh data is received.
-     */
-    notifySubscribers(endpoint, data) {
+  put(endpoint, body) {
+    return this.request(endpoint, {
+      method: "PUT",
+      body: JSON.stringify(body),
+    });
+  }
 
-        this.subscribers.forEach(callback => {
+  patch(endpoint, body) {
+    return this.request(endpoint, {
+      method: "PATCH",
+      body: JSON.stringify(body),
+    });
+  }
 
-            callback(endpoint, data);
+  delete(endpoint) {
+    return this.request(endpoint, {
+      method: "DELETE",
+    });
+  }
 
-        });
-    }
+  subscribe(callback) {
+    this.subscribers.add(callback);
 
-    /**
-     * Clear complete cache
-     * Useful when user clicks Refresh
-     */
-    clearCache() {
+    return () => {
+      this.subscribers.delete(callback);
+    };
+  }
 
-        this.cache.clear();
+  notifySubscribers(endpoint, data) {
+    this.subscribers.forEach((callback) => {
+      callback(endpoint, data);
+    });
+  }
 
-        console.log("🗑 Cache Cleared");
+  clearCache() {
+    this.cache.clear();
+    console.log("🗑 Cache Cleared");
+  }
 
-    }
+  getCacheSize() {
+    return this.cache.size;
+  }
 }
