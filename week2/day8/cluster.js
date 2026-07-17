@@ -1,7 +1,10 @@
 const cluster = require("cluster");
 const os = require("os");
 
-const totalCPUs = os.cpus().length;
+const totalCPUs =
+  process.env.NODE_ENV === "production"
+    ? os.cpus().length
+    : 2;
 
 if (cluster.isPrimary) {
   console.log("=================================");
