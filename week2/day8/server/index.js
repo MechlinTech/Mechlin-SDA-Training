@@ -12,7 +12,8 @@ const http = require("http");
 const { Server } = require("socket.io");
 
 const app = require("./app");
-
+const { connectPostgreSQL } = require("./database/postgresql");
+const connectMongoDB = require("./database/mongodb");
 const initializeSocket = require("./socket/socketHandler");
 const notificationService = require("./services/notificationService");
 const { logger } = require("./middleware/errorHandler");
@@ -47,6 +48,13 @@ initializeSocket(io);
 
 notificationService.initialize();
 
+
+/* -------------------------------------------------------------------------- */
+/*                         Connect MongoDB                                    */
+/* -------------------------------------------------------------------------- */
+
+connectMongoDB();
+connectPostgreSQL();
 /* -------------------------------------------------------------------------- */
 /*                               Start Server                                 */
 /* -------------------------------------------------------------------------- */
