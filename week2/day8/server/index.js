@@ -1,10 +1,20 @@
-// Responsible for:
-// Loading environment variables
-// Creating the HTTP server
-// Initializing Socket.IO
-// Starting the application
-// Handling graceful shutdown
-// (Later) Adding cluster support
+// ============================================================================
+// Server Entry Point
+// ============================================================================
+//
+// Responsibilities:
+// - Load environment variables
+// - Create HTTP server
+// - Initialize Socket.IO
+// - Start background services
+// - Start Express application
+// - Handle graceful shutdown
+//
+// NOTE:
+// All API routes are registered inside app.js.
+// This file is responsible only for bootstrapping the server.
+//
+// ============================================================================
 
 require("dotenv").config();
 
@@ -12,22 +22,21 @@ const http = require("http");
 const { Server } = require("socket.io");
 
 const app = require("./app");
-const { connectPostgreSQL } = require("./database/postgresql");
-const connectMongoDB = require("./database/mongodb");
+
 const initializeSocket = require("./socket/socketHandler");
 const notificationService = require("./services/notificationService");
 const { logger } = require("./middleware/errorHandler");
-
+const connectMongoDB = require("./database/mongodb");
 const PORT = process.env.PORT || 3000;
 
 /* -------------------------------------------------------------------------- */
-/*                              Create HTTP Server                            */
+/*                            Create HTTP Server                              */
 /* -------------------------------------------------------------------------- */
 
 const server = http.createServer(app);
 
 /* -------------------------------------------------------------------------- */
-/*                             Initialize Socket.IO                           */
+/*                           Initialize Socket.IO                             */
 /* -------------------------------------------------------------------------- */
 
 const io = new Server(server, {
@@ -40,53 +49,57 @@ const io = new Server(server, {
   },
 });
 
+// Register socket events
 initializeSocket(io);
 
 /* -------------------------------------------------------------------------- */
-/*                              Start Services                                */
+/*                         Initialize Background Services                      */
 /* -------------------------------------------------------------------------- */
 
+// Start notification service
 notificationService.initialize();
 
+async function startServer() {
+  try {
+    await connectMongoDB();
 
-/* -------------------------------------------------------------------------- */
-/*                         Connect MongoDB                                    */
-/* -------------------------------------------------------------------------- */
+    server.listen(PORT, () => {
+      logger.info(`🚀 Server running on port ${PORT}`);
+      logger.info(
+        `🌍 Environment: ${process.env.NODE_ENV || "development"}`
+      );
 
-connectMongoDB();
-connectPostgreSQL();
-/* -------------------------------------------------------------------------- */
-/*                               Start Server                                 */
-/* -------------------------------------------------------------------------- */
+      console.log("=================================");
+      console.log(`🚀 Server running on port ${PORT}`);
+      console.log(
+        `🌍 Environment : ${process.env.NODE_ENV || "development"}`
+      );
+      console.log("=================================");
+    });
+  } catch (error) {
+    logger.error(error);
+    console.error(error);
+    process.exit(1);
+  }
+}
 
-server.listen(PORT, () => {
-  logger.info(`🚀 Server running on port ${PORT}`);
-  logger.info(`🌍 Environment: ${process.env.NODE_ENV || "development"}`);
+startServer();
 
-  console.log("=================================");
-  console.log(`🚀 Server running on port ${PORT}`);
-  console.log(`🌍 Environment : ${process.env.NODE_ENV || "development"}`);
-  console.log("=================================");
-});
+
+// start server hataya 
 
 /* -------------------------------------------------------------------------- */
 /*                           Graceful Shutdown                                */
 /* -------------------------------------------------------------------------- */
 
-process.on("SIGINT", () => {
-  logger.info("Shutting down server...");
+const gracefulShutdown = (signal) => {
+  logger.info(`${signal} received. Shutting down server...`);
 
   server.close(() => {
-    logger.info("HTTP Server Closed");
+    logger.info("✅ HTTP Server Closed Successfully");
     process.exit(0);
   });
-});
+};
 
-process.on("SIGTERM", () => {
-  logger.info("SIGTERM received");
-
-  server.close(() => {
-    logger.info("HTTP Server Closed");
-    process.exit(0);
-  });
-});
+process.on("SIGINT", () => gracefulShutdown("SIGINT"));
+process.on("SIGTERM", () => gracefulShutdown("SIGTERM"));

@@ -36,6 +36,12 @@ class AppError extends Error {
 }
 
 const errorHandler = (err, req, res, next) => {
+  if (err.code === 11000) {
+    return res.status(409).json({
+        success: false,
+        message: "Email already exists."
+    });
+}
   logger.error({
     message: err.message,
     method: req.method,

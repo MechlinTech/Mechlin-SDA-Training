@@ -20,6 +20,7 @@ const healthRoutes = require("./routes/healthRoutes");
 const userRoutes = require("./routes/userRoutes");
 const productRoutes = require("./routes/productRoutes");
 const orderRoutes = require("./routes/orderRoutes");
+const authRoutes = require("./routes/authRoutes");
 
 const app = express();
 
@@ -80,7 +81,7 @@ app.use("/", healthRoutes);
 app.use("/api/users", userRoutes);
 app.use("/api/products", productRoutes);
 app.use("/api/orders", orderRoutes);
-
+app.use("/api/auth", authRoutes);
 /* -------------------------------------------------------------------------- */
 /*                              404 Handler                                   */
 /* -------------------------------------------------------------------------- */

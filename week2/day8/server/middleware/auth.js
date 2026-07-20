@@ -1,5 +1,7 @@
 const jwt = require("jsonwebtoken");
 const { AppError } = require("./errorHandler");
+const bcrypt = require("bcryptjs");
+const User = require("../models/User");
 
 /**
  * ============================================================================
@@ -49,6 +51,124 @@ const { AppError } = require("./errorHandler");
  * next()
  * ============================================================================
  */
+/**
+ * ============================================================================
+ * JWT Utility Functions
+ * ============================================================================
+ *
+ * These helper functions are used across authentication routes
+ * for generating and verifying JSON Web Tokens.
+ *
+ * ============================================================================
+ */
+
+/**
+ * Generate Access Token
+ */
+const generateAccessToken = (user) => {
+  return jwt.sign(
+    {
+      id: user._id,
+      email: user.email,
+      role: user.role,
+      type: "access",
+    },
+    process.env.JWT_SECRET,
+    {
+      expiresIn: process.env.JWT_EXPIRES_IN || "15m",
+      issuer: "mechlin-training",
+      audience: "mechlin-users",
+    }
+  );
+};
+
+/**
+ * Generate Refresh Token
+ */
+const generateRefreshToken = (user) => {
+  return jwt.sign(
+    {
+      id: user._id,
+      type: "refresh",
+    },
+    process.env.JWT_REFRESH_SECRET || process.env.JWT_SECRET,
+    {
+      expiresIn: process.env.JWT_REFRESH_EXPIRES_IN || "7d",
+      issuer: "mechlin-training",
+      audience: "mechlin-users",
+    }
+  );
+};
+
+/**
+ * Verify JWT Token
+ */
+const verifyToken = (token) => {
+  return jwt.verify(
+    token,
+    process.env.JWT_SECRET,
+    {
+      issuer: "mechlin-training",
+      audience: "mechlin-users",
+    }
+  );
+};
+
+const verifyRefreshToken = (token) => {
+  return jwt.verify(
+    token,
+    process.env.JWT_REFRESH_SECRET || process.env.JWT_SECRET,
+    {
+      issuer: "mechlin-training",
+      audience: "mechlin-users",
+    }
+  );
+};
+/**
+ * ============================================================================
+ * Password Utility Functions
+ * ============================================================================
+ *
+ * These helper functions are responsible for:
+ *
+ * • Hashing user passwords before saving
+ * • Comparing entered passwords during login
+ * • Validating password strength
+ *
+ * ============================================================================
+ */
+
+/**
+ * Hash Password
+ */
+const hashPassword = async (password) => {
+  const saltRounds = 10;
+  return await bcrypt.hash(password, saltRounds);
+};
+
+/**
+ * Compare Password
+ */
+const comparePassword = async (plainPassword, hashedPassword) => {
+  return await bcrypt.compare(plainPassword, hashedPassword);
+};
+
+/**
+ * Validate Password Strength
+ *
+ * Rules:
+ * ✔ Minimum 8 characters
+ * ✔ One uppercase letter
+ * ✔ One lowercase letter
+ * ✔ One number
+ * ✔ One special character
+ */
+const validatePassword = (password) => {
+  const passwordRegex =
+    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&.#_-])[A-Za-z\d@$!%*?&.#_-]{8,}$/;
+
+  return passwordRegex.test(password);
+};
 const authenticate = (req, res, next) => {
   try {
     // Read Authorization header
@@ -63,10 +183,7 @@ const authenticate = (req, res, next) => {
     const token = authHeader.split(" ")[1];
 
     // Verify token using secret key
-    const decoded = jwt.verify(
-      token,
-      process.env.JWT_SECRET || "mechlin-secret-key"
-    );
+    const decoded = verifyToken(token);
 
     // Store logged-in user details
     req.user = decoded;
@@ -143,10 +260,7 @@ const optionalAuth = (req, res, next) => {
     const token = authHeader.split(" ")[1];
 
     // Decode token if available
-    req.user = jwt.verify(
-      token,
-      process.env.JWT_SECRET || "mechlin-secret-key"
-    );
+    req.user = verifyToken(token);
 
     next();
   } catch (error) {
@@ -156,6 +270,18 @@ const optionalAuth = (req, res, next) => {
 };
 
 module.exports = {
+  // JWT Helpers
+  generateAccessToken,
+  generateRefreshToken,
+  verifyToken,
+  verifyRefreshToken,
+
+  // Password Helpers
+  hashPassword,
+  comparePassword,
+  validatePassword,
+
+  // Middleware
   authenticate,
   authorize,
   optionalAuth,
