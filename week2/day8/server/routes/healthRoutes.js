@@ -3,7 +3,21 @@ const express = require("express");
 const router = express.Router();
 
 /**
- * Root Route
+ * @swagger
+ * tags:
+ *   name: Health
+ *   description: Health monitoring endpoints
+ */
+
+/**
+ * @swagger
+ * /:
+ *   get:
+ *     summary: Root endpoint
+ *     tags: [Health]
+ *     responses:
+ *       200:
+ *         description: Server is running successfully
  */
 router.get("/", (req, res) => {
   res.json({
@@ -13,7 +27,14 @@ router.get("/", (req, res) => {
 });
 
 /**
- * Health Check Route
+ * @swagger
+ * /health:
+ *   get:
+ *     summary: Health Check
+ *     tags: [Health]
+ *     responses:
+ *       200:
+ *         description: Server health information
  */
 router.get("/health", (req, res) => {
   res.status(200).json({

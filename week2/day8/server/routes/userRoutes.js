@@ -15,6 +15,12 @@ const {
 } = require("../middleware/validation");
 
 const router = express.Router();
+/**
+ * @swagger
+ * tags:
+ *   name: Users
+ *   description: User management APIs
+ */
 
 /**
  * ============================================================================
@@ -46,6 +52,34 @@ const router = express.Router();
  * validateUser -> Controller
  * ============================================================================
  */
+/**
+ * @swagger
+ * /api/users:
+ *   post:
+ *     summary: Register a new user
+ *     tags: [Users]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               name:
+ *                 type: string
+ *                 example: John Doe
+ *               email:
+ *                 type: string
+ *                 example: john@example.com
+ *               password:
+ *                 type: string
+ *                 example: Password@123
+ *     responses:
+ *       201:
+ *         description: User created successfully
+ *       400:
+ *         description: Validation error
+ */
 router.post("/", validateUser, async (req, res) => {
   try {
     const user = await userService.createUser(req.body);
@@ -71,6 +105,31 @@ router.post("/", validateUser, async (req, res) => {
  * Validation Flow:
  * validateLogin -> Controller
  * ============================================================================
+ */
+/**
+ * @swagger
+ * /api/users/login:
+ *   post:
+ *     summary: Login user
+ *     tags: [Users]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               email:
+ *                 type: string
+ *                 example: john@example.com
+ *               password:
+ *                 type: string
+ *                 example: Password@123
+ *     responses:
+ *       200:
+ *         description: Login successful
+ *       401:
+ *         description: Invalid credentials
  */
 router.post("/login", validateLogin, async (req, res) => {
   try {
@@ -100,6 +159,22 @@ router.post("/login", validateLogin, async (req, res) => {
  * authenticate -> authorize(admin) -> Controller
  * ============================================================================
  */
+/**
+ * @swagger
+ * /api/users:
+ *   get:
+ *     summary: Get all users
+ *     tags: [Users]
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: List of users
+ *       401:
+ *         description: Unauthorized
+ *       403:
+ *         description: Forbidden
+ */
 router.get("/", authenticate, authorize("admin"), async (req, res) => {
   try {
     const users = await userService.getAllUsers();
@@ -126,6 +201,26 @@ router.get("/", authenticate, authorize("admin"), async (req, res) => {
  * authenticate -> validateId -> Controller
  * ============================================================================
  */
+/**
+ * @swagger
+ * /api/users/{id}:
+ *   get:
+ *     summary: Get user by ID
+ *     tags: [Users]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: User details
+ *       404:
+ *         description: User not found
+ */
 router.get("/:id", authenticate, validateId, async (req, res) => {
   try {
     const user = await userService.getUserById(req.params.id);
@@ -151,6 +246,26 @@ router.get("/:id", authenticate, validateId, async (req, res) => {
  * Middleware Flow:
  * authenticate -> validateId -> validateUser -> Controller
  * ============================================================================
+ */
+/**
+ * @swagger
+ * /api/users/{id}:
+ *   put:
+ *     summary: Update user
+ *     tags: [Users]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: User updated successfully
+ *       400:
+ *         description: Validation error
  */
 router.put(
   "/:id",
@@ -183,6 +298,26 @@ router.put(
  * Middleware Flow:
  * authenticate -> authorize(admin) -> validateId -> Controller
  * ============================================================================
+ */
+/**
+ * @swagger
+ * /api/users/{id}:
+ *   delete:
+ *     summary: Delete user
+ *     tags: [Users]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: User deleted successfully
+ *       404:
+ *         description: User not found
  */
 router.delete(
   "/:id",

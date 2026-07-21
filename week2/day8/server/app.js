@@ -22,6 +22,9 @@ const productRoutes = require("./routes/productRoutes");
 const orderRoutes = require("./routes/orderRoutes");
 const authRoutes = require("./routes/authRoutes");
 
+const swaggerUi = require("swagger-ui-express");
+const swaggerSpec = require("./docs/swagger");
+
 const app = express();
 
 /* -------------------------------------------------------------------------- */
@@ -77,6 +80,14 @@ app.use(performanceMiddleware);
 /* -------------------------------------------------------------------------- */
 
 app.use("/", healthRoutes);
+
+app.use(
+  "/api-docs",
+  swaggerUi.serve,
+  swaggerUi.setup(swaggerSpec, {
+    explorer: true,
+  })
+);
 
 app.use("/api/users", userRoutes);
 app.use("/api/products", productRoutes);

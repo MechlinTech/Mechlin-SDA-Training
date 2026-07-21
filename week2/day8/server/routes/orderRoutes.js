@@ -15,7 +15,12 @@ const {
 } = require("../middleware/validation");
 
 const router = express.Router();
-
+/**
+ * @swagger
+ * tags:
+ *   name: Orders
+ *   description: Order management APIs
+ */
 /**
  * ============================================================================
  * Order Routes
@@ -41,6 +46,33 @@ const router = express.Router();
  * Middleware Flow:
  * authenticate -> validateOrder -> Controller
  * ============================================================================
+ */
+/**
+ * @swagger
+ * /api/orders:
+ *   post:
+ *     summary: Create a new order
+ *     tags: [Orders]
+ *     security:
+ *       - bearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               productId:
+ *                 type: string
+ *                 example: 64a123456789abcdef123456
+ *               quantity:
+ *                 type: integer
+ *                 example: 2
+ *     responses:
+ *       201:
+ *         description: Order created successfully
+ *       401:
+ *         description: Unauthorized
  */
 router.post(
   "/",
@@ -69,6 +101,20 @@ router.post(
  * Middleware Flow:
  * authenticate -> authorize(admin) -> validatePagination -> Controller
  * ============================================================================
+ */
+/**
+ * @swagger
+ * /api/orders:
+ *   get:
+ *     summary: Get all orders
+ *     tags: [Orders]
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: List of orders
+ *       403:
+ *         description: Admin access required
  */
 router.get(
   "/",
@@ -100,6 +146,26 @@ router.get(
  * authenticate -> validateId -> Controller
  * ============================================================================
  */
+/**
+ * @swagger
+ * /api/orders/{id}:
+ *   get:
+ *     summary: Get order by ID
+ *     tags: [Orders]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Order details
+ *       404:
+ *         description: Order not found
+ */
 router.get(
   "/:id",
   authenticate,
@@ -127,6 +193,36 @@ router.get(
  * Middleware Flow:
  * authenticate -> authorize(admin) -> validateId -> Controller
  * ============================================================================
+ */
+/**
+ * @swagger
+ * /api/orders/{id}:
+ *   put:
+ *     summary: Update order status
+ *     tags: [Orders]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               status:
+ *                 type: string
+ *                 example: shipped
+ *     responses:
+ *       200:
+ *         description: Order updated successfully
+ *       403:
+ *         description: Admin access required
  */
 router.put(
   "/:id",
@@ -159,6 +255,26 @@ router.put(
  * Middleware Flow:
  * authenticate -> authorize(admin) -> validateId -> Controller
  * ============================================================================
+ */
+/**
+ * @swagger
+ * /api/orders/{id}:
+ *   delete:
+ *     summary: Delete order
+ *     tags: [Orders]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Order deleted successfully
+ *       404:
+ *         description: Order not found
  */
 router.delete(
   "/:id",
