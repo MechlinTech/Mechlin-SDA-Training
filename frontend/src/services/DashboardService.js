@@ -1,33 +1,58 @@
-import { DataManager } from "./DataManager";
+import apiService from "./ApiService";
 
-const API_URL = "https://dummyjson.com";
-
-class DashboardService extends DataManager {
-  constructor() {
-    super(API_URL);
-  }
-
+class DashboardService {
   /**
    * Fetch complete dashboard data
    */
   async getDashboardMetrics() {
     try {
-      const [users, products, posts] = await Promise.all([
-        this.get("/users"),
-        this.get("/products"),
-        this.get("/posts"),
-      ]);
+      // ----------------------------------
+      // Fetch users only if authenticated
+      // ----------------------------------
+      let users = [];
 
-      const totalRevenue = products.products.reduce(
-        (sum, product) => sum + product.price,
+      const token = localStorage.getItem("authToken");
+
+      if (token) {
+        try {
+          const usersResponse = await apiService.get("/users");
+
+          users = Array.isArray(usersResponse.data)
+            ? usersResponse.data
+            : [];
+        } catch (error) {
+          console.warn("Unable to fetch users.", error);
+        }
+      }
+
+      // ----------------------------------
+      // Fetch products
+      // ----------------------------------
+      let products = [];
+
+      try {
+        const productsResponse = await apiService.get("/products");
+
+        products = Array.isArray(productsResponse.data)
+          ? productsResponse.data
+          : [];
+      } catch (error) {
+        console.warn("Products endpoint unavailable.", error);
+      }
+
+      // ----------------------------------
+      // Calculate dashboard metrics
+      // ----------------------------------
+      const totalRevenue = products.reduce(
+        (sum, product) => sum + Number(product.price || 0),
         0
       );
 
       return {
-        users: users.total,
-        orders: products.total,
+        users: users.length,
+        orders: products.length,
         revenue: Number(totalRevenue.toFixed(2)),
-        growthRate: 15.6,
+        growthRate: products.length > 0 ? 15.6 : 0,
 
         months: [
           "Jan",
@@ -38,6 +63,7 @@ class DashboardService extends DataManager {
           "Jun",
         ],
 
+        // Placeholder values until historical analytics are implemented
         revenueHistory: [
           1200,
           1800,
@@ -47,12 +73,43 @@ class DashboardService extends DataManager {
           Number(totalRevenue.toFixed(0)),
         ],
 
-        latestPosts: posts.posts.slice(0, 5),
+        // Placeholder until Posts API is implemented
+        latestPosts: [],
+
+        // Raw backend data for future dashboard widgets
+        usersList: users,
+        productsList: products,
       };
     } catch (error) {
       console.error("DashboardService Error:", error);
-      throw error;
+
+      // Safe fallback values
+      return {
+        users: 0,
+        orders: 0,
+        revenue: 0,
+        growthRate: 0,
+
+        months: [
+          "Jan",
+          "Feb",
+          "Mar",
+          "Apr",
+          "May",
+          "Jun",
+        ],
+
+        revenueHistory: [0, 0, 0, 0, 0, 0],
+
+        latestPosts: [],
+        usersList: [],
+        productsList: [],
+      };
     }
+  }
+
+  clearCache() {
+    apiService.clearCache();
   }
 }
 

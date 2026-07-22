@@ -22,7 +22,7 @@ const router = express.Router();
 router.get("/", (req, res) => {
   res.json({
     success: true,
-    message: "Week 2 Day 9 Express Server is running 🚀",
+    message: "message: Server is running successfully 🚀",
   });
 });
 
@@ -45,6 +45,32 @@ router.get("/health", (req, res) => {
     memory: process.memoryUsage(),
     nodeVersion: process.version,
     environment: process.env.NODE_ENV || "development",
+  });
+});
+
+
+/**
+ * @swagger
+ * /metrics:
+ *   get:
+ *     summary: Application metrics
+ *     description: Returns application runtime metrics including memory usage, CPU usage, uptime, and environment details.
+ *     tags: [Health]
+ *     responses:
+ *       200:
+ *         description: Application metrics retrieved successfully
+ */
+router.get("/metrics", (req, res) => {
+  res.status(200).json({
+    success: true,
+    status: "OK",
+    uptime: process.uptime(),
+    memory: process.memoryUsage(),
+    cpuUsage: process.cpuUsage(),
+    platform: process.platform,
+    nodeVersion: process.version,
+    environment: process.env.NODE_ENV || "development",
+    timestamp: new Date().toISOString(),
   });
 });
 

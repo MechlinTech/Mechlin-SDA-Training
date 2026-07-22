@@ -4,6 +4,7 @@ class ApiService {
   constructor() {
     this.baseURL = API_CONFIG.BASE_URL;
     this.cache = new Map();
+    this.token = localStorage.getItem("authToken");
   }
 
   getCacheKey(endpoint, options = {}) {
@@ -94,6 +95,9 @@ class ApiService {
     const response = await this.fetchWithRetry(url, {
       headers: {
         "Content-Type": "application/json",
+        ...(this.token && {
+          Authorization: `Bearer ${this.token}`,
+        }),
         ...(options.headers || {}),
       },
       ...options,
@@ -140,6 +144,21 @@ class ApiService {
     return this.request(endpoint, {
       method: "DELETE",
     });
+  }
+  async login(credentials) {
+    const response = await this.post("/auth/login", credentials);
+  
+    if (response?.data?.accessToken) {
+      this.token = response.data.accessToken;
+      localStorage.setItem("authToken", this.token);
+    }
+  
+    return response;
+  }
+  
+  logout() {
+    this.token = null;
+    localStorage.removeItem("authToken");
   }
 
   clearCache() {
