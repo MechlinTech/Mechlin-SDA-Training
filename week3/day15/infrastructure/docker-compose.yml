@@ -1,0 +1,158 @@
+# ==============================================================================
+# File: docker-compose.yml
+# Location: week3/day15/infrastructure/
+# ==============================================================================
+#
+# PURPOSE
+# -------
+# This file defines the complete application infrastructure using Docker Compose.
+#
+# Instead of starting each service manually (Node.js, MongoDB, PostgreSQL,
+# Redis, and Nginx), Docker Compose allows us to launch the entire stack
+# with a single command.
+#
+# RESPONSIBILITIES
+# ----------------
+# ✓ Create and manage application containers
+# ✓ Configure networking between services
+# ✓ Provide persistent storage using Docker volumes
+# ✓ Pass environment variables securely
+# ✓ Define service startup dependencies
+#
+# SERVICES INCLUDED
+# -----------------
+# 1. app         -> Node.js Backend Application
+# 2. mongodb     -> MongoDB Database
+# 3. postgresql  -> PostgreSQL Database
+# 4. redis       -> Redis Cache
+# 5. nginx       -> Reverse Proxy / Load Balancer
+#
+# WHY DO WE USE THIS?
+# -------------------
+# Instead of installing databases separately on every developer machine,
+# Docker creates isolated containers so everyone works in the same environment.
+#
+# Example:
+#
+#   docker compose up -d
+#
+# starts the entire backend infrastructure automatically.
+#
+# ==============================================================================
+
+version: "3.8"
+
+services:
+
+  # ---------------------------------------------------------------------------
+  # Main Node.js Application
+  # ---------------------------------------------------------------------------
+  app:
+    build: .
+
+    ports:
+      - "${PORT:-3000}:3000"
+
+    environment:
+      - NODE_ENV=${NODE_ENV:-development}
+      - MONGODB_URI=${MONGODB_URI}
+      - POSTGRES_URL=${POSTGRES_URL}
+      - REDIS_URL=${REDIS_URL}
+      - JWT_SECRET=${JWT_SECRET}
+
+    depends_on:
+      - mongodb
+      - postgresql
+      - redis
+
+    volumes:
+      - ./logs:/app/logs
+
+    restart: unless-stopped
+
+  # ---------------------------------------------------------------------------
+  # MongoDB Database
+  # Stores application documents and collections.
+  # ---------------------------------------------------------------------------
+  mongodb:
+    image: mongo:5.0
+
+    ports:
+      - "27017:27017"
+
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=${MONGO_ROOT_USERNAME}
+      - MONGO_INITDB_ROOT_PASSWORD=${MONGO_ROOT_PASSWORD}
+
+    volumes:
+      - mongodb_data:/data/db
+      - ./scripts/mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
+
+    restart: unless-stopped
+
+  # ---------------------------------------------------------------------------
+  # PostgreSQL Database
+  # Used for relational data storage.
+  # ---------------------------------------------------------------------------
+  postgresql:
+    image: postgres:13
+
+    ports:
+      - "5432:5432"
+
+    environment:
+      - POSTGRES_DB=${POSTGRES_DB}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+
+    volumes:
+      - postgresql_data:/var/lib/postgresql/data
+      - ./scripts/postgres-init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+
+    restart: unless-stopped
+
+  # ---------------------------------------------------------------------------
+  # Redis Cache
+  # Used for caching and session storage.
+  # ---------------------------------------------------------------------------
+  redis:
+    image: redis:6.0-alpine
+
+    ports:
+      - "6379:6379"
+
+    volumes:
+      - redis_data:/data
+
+    restart: unless-stopped
+
+  # ---------------------------------------------------------------------------
+  # Nginx Reverse Proxy
+  # Routes incoming requests to the application.
+  # ---------------------------------------------------------------------------
+  nginx:
+    image: nginx:alpine
+
+    ports:
+      - "80:80"
+      - "443:443"
+
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./nginx/ssl:/etc/nginx/ssl:ro
+
+    depends_on:
+      - app
+
+    restart: unless-stopped
+
+# ------------------------------------------------------------------------------
+# Named Volumes
+#
+# These volumes ensure that database data persists even if containers are
+# stopped or recreated.
+# ------------------------------------------------------------------------------
+volumes:
+  mongodb_data:
+  postgresql_data:
+  redis_data:
