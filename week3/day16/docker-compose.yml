@@ -1,0 +1,75 @@
+version: "3.9"
+
+services:
+  app:
+    build:
+      context: ../../
+      dockerfile: week3/day16/Dockerfile
+
+    container_name: sda-training-app
+
+    ports:
+      - "3000:3000"
+
+    environment:
+      NODE_ENV: development
+      PORT: 3000
+      MONGODB_URI: mongodb://mongodb:27017/sda-training
+      POSTGRES_URL: postgres://postgres:password@postgres:5432/sda_training
+      REDIS_URL: redis://redis:6379
+
+    depends_on:
+      - mongodb
+      - postgres
+      - redis
+
+    restart: unless-stopped
+
+  mongodb:
+    image: mongo:7
+
+    container_name: mongodb
+
+    ports:
+      - "27017:27017"
+
+    volumes:
+      - mongodb_data:/data/db
+
+    restart: unless-stopped
+
+  postgres:
+    image: postgres:16
+
+    container_name: postgres
+
+    environment:
+      POSTGRES_DB: sda_training
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+
+    ports:
+      - "5432:5432"
+
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+    restart: unless-stopped
+
+  redis:
+    image: redis:7-alpine
+
+    container_name: redis
+
+    ports:
+      - "6379:6379"
+
+    volumes:
+      - redis_data:/data
+
+    restart: unless-stopped
+
+volumes:
+  mongodb_data:
+  postgres_data:
+  redis_data:
