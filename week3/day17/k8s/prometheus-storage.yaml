@@ -1,0 +1,66 @@
+# -----------------------------------------------------------------------------
+# Purpose:
+# Creates storage and configuration required by Prometheus.
+# This file provides:
+# 1. Persistent Volume (PV)
+# 2. Persistent Volume Claim (PVC)
+# 3. ConfigMap containing Prometheus configuration
+# -----------------------------------------------------------------------------
+
+apiVersion: v1
+kind: PersistentVolume
+
+metadata:
+  name: prometheus-data-pv
+
+spec:
+  capacity:
+    storage: 10Gi
+
+  accessModes:
+    - ReadWriteOnce
+
+  persistentVolumeReclaimPolicy: Retain
+
+  storageClassName: local-storage
+
+  hostPath:
+    path: /mnt/data/prometheus
+
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+
+metadata:
+  name: prometheus-data-pvc
+  namespace: sda-training
+
+spec:
+  accessModes:
+    - ReadWriteOnce
+
+  resources:
+    requests:
+      storage: 10Gi
+
+  storageClassName: local-storage
+
+---
+apiVersion: v1
+kind: ConfigMap
+
+metadata:
+  name: prometheus-config
+  namespace: sda-training
+
+data:
+  prometheus.yml: |
+    global:
+      scrape_interval: 15s
+
+    scrape_configs:
+      - job_name: "kubernetes"
+
+        static_configs:
+          - targets:
+              - "localhost:9090"

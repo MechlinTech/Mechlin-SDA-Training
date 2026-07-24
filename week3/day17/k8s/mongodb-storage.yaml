@@ -1,0 +1,42 @@
+# -----------------------------------------------------------------------------
+# Purpose:
+# Creates Persistent Volume and Persistent Volume Claim for MongoDB.
+# This ensures MongoDB data is retained even if the Pod is recreated.
+# -----------------------------------------------------------------------------
+
+apiVersion: v1
+kind: PersistentVolume
+
+metadata:
+  name: mongodb-data-pv
+
+spec:
+  capacity:
+    storage: 20Gi
+
+  accessModes:
+    - ReadWriteOnce
+
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: local-storage
+
+  hostPath:
+    path: /mnt/data/mongodb
+
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+
+metadata:
+  name: mongodb-data-pvc
+  namespace: sda-training
+
+spec:
+  accessModes:
+    - ReadWriteOnce
+
+  resources:
+    requests:
+      storage: 20Gi
+
+  storageClassName: local-storage

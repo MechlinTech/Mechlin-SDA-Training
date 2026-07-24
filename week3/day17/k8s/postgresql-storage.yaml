@@ -1,0 +1,43 @@
+# -----------------------------------------------------------------------------
+# Purpose:
+# Creates Persistent Volume and Persistent Volume Claim for PostgreSQL.
+# Ensures PostgreSQL database files persist across Pod restarts.
+# -----------------------------------------------------------------------------
+
+apiVersion: v1
+kind: PersistentVolume
+
+metadata:
+  name: postgresql-data-pv
+
+spec:
+  capacity:
+    storage: 20Gi
+
+  accessModes:
+    - ReadWriteOnce
+
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: local-storage
+
+  hostPath:
+    path: /mnt/data/postgresql
+
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+
+metadata:
+  name: postgresql-data-pvc
+  namespace: sda-training
+
+spec:
+  accessModes:
+    - ReadWriteOnce
+
+  resources:
+    requests:
+      storage: 20Gi
+
+  storageClassName: local-storage
+  
