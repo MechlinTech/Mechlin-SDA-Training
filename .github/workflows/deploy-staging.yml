@@ -1,0 +1,42 @@
+name: Deploy to Staging
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - develop
+      - feature/**
+
+jobs:
+  deploy-staging:
+    name: Deploy to Staging Environment
+    runs-on: ubuntu-latest
+
+    environment:
+      name: staging
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Display Deployment Information
+        run: |
+          echo "Starting deployment to STAGING..."
+          echo "Branch: $GITHUB_REF"
+          echo "Commit: $GITHUB_SHA"
+
+      - name: Verify Kubernetes Manifests
+        run: |
+          test -f week3/day17/k8s/deployment.yaml
+          test -f week3/day17/k8s/service.yaml
+          test -f week3/day17/k8s/ingress.yaml
+          echo "All required Kubernetes manifests found."
+
+      - name: Simulate Deployment
+        run: |
+          echo "kubectl apply -f week3/day17/k8s/"
+          echo "Deployment to staging completed successfully."
+
+      - name: Deployment Summary
+        run: |
+          echo "Application deployed to STAGING environment."

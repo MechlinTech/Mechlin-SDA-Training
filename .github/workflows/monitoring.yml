@@ -1,0 +1,28 @@
+name: Monitoring
+
+on:
+  workflow_dispatch:
+
+jobs:
+  monitoring:
+    name: Monitoring Information
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Show Repository Information
+        run: |
+          echo "Repository: $GITHUB_REPOSITORY"
+          echo "Branch: $GITHUB_REF_NAME"
+          echo "Commit: $GITHUB_SHA"
+
+      - name: Show Runner Information
+        run: |
+          uname -a
+          df -h
+          free -m || true
+
+      - name: Monitoring Completed
+        run: echo "Monitoring workflow finished successfully."
