@@ -1,0 +1,48 @@
+# -----------------------------------------------------------------------------
+# Purpose:
+# Creates Persistent Volume Claims (PVCs) that allow Pods to request and use
+# persistent storage without directly referencing the underlying storage.
+# -----------------------------------------------------------------------------
+
+apiVersion: v1
+kind: PersistentVolumeClaim
+
+metadata:
+  name: app-logs-pvc
+  namespace: sda-training
+
+  labels:
+    app: sda-training
+    component: logs
+
+spec:
+  accessModes:
+    - ReadWriteMany
+
+  resources:
+    requests:
+      storage: 10Gi
+
+  storageClassName: nfs
+
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+
+metadata:
+  name: app-uploads-pvc
+  namespace: sda-training
+
+  labels:
+    app: sda-training
+    component: uploads
+
+spec:
+  accessModes:
+    - ReadWriteMany
+
+  resources:
+    requests:
+      storage: 50Gi
+
+  storageClassName: nfs
