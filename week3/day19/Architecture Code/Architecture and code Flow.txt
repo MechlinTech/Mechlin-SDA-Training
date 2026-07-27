@@ -1,0 +1,167 @@
+                         Mechlin-SDA-Training
+┌──────────────────────────────────────────────────────────────────────┐
+│                                                                      │
+│  Week 1 (Frontend Learning)                                          │
+│  ─────────────────────────────                                       │
+│  React                                                               │
+│  Components                                                          │
+│  Dashboard                                                           │
+│  API Calling Concepts                                                │
+│  State Management                                                    │
+│          │                                                           │
+│          ▼                                                           │
+│  Reuse Concepts Only                                                 │
+│                                                                      │
+├──────────────────────────────────────────────────────────────────────┤
+│                                                                      │
+│  Week 2 (Backend)                                                    │
+│                                                                      │
+│  week2/day8                                                         │
+│      │                                                               │
+│      ├── server/                                                     │
+│      ├── routes/                                                     │
+│      ├── middleware/                                                 │
+│      ├── models/                                                     │
+│      ├── auth                                                        │
+│      ├── users                                                       │
+│      ├── products                                                    │
+│      └── orders                                                      │
+│                                                                      │
+│                 ▲                                                    │
+│                 │ REST API                                           │
+│                 │                                                    │
+├─────────────────┼────────────────────────────────────────────────────┤
+│                 │                                                    │
+│                 ▼                                                    │
+│                                                                      │
+│  Week 3 Day19                                                        │
+│                                                                      │
+│  React Native App                                                    │
+│                                                                      │
+│  Login Screen                                                        │
+│  Dashboard                                                           │
+│  Products                                                            │
+│  Orders                                                              │
+│  Profile                                                             │
+│                                                                      │
+│  Navigation                                                          │
+│  Redux                                                               │
+│  API Service                                                         │
+│  AsyncStorage                                                        │
+│                                                                      │
+└──────────────────────────────────────────────────────────────────────┘
+
+
+// Code Flow
+User
+   │
+   ▼
+React Native Screen
+   │
+   ▼
+Redux
+   │
+   ▼
+API Service
+   │
+   ▼
+Express Backend
+   │
+   ▼
+MongoDB
+
+
+
+mobile/
+│
+├── src/
+│
+├── screens/
+│     ├── LoginScreen
+│     ├── DashboardScreen
+│     ├── ProductScreen
+│     ├── OrderScreen
+│     └── ProfileScreen
+│
+├── navigation/
+│
+├── services/
+│     └── apiService
+│
+├── store/
+│
+├── components/
+│
+├── hooks/
+│
+├── utils/
+│
+└── assets/
+
+
+
+// Development flow
+week3/day19/mobile
+        │
+        ▼
+React Native UI
+        │
+        ▼
+API Service
+        │
+        ▼
+http://localhost:3000
+        │
+        ▼
+week2/day8/server
+
+
+
+
+
+App Starts
+     │
+     ▼
+Restore Session
+     │
+ ┌── Yes ─────────► Dashboard
+ │
+ └── No ──────────► Login
+
+Login
+     │
+Save User
+Save Token
+Save Login State
+     │
+     ▼
+Dashboard
+
+Dashboard
+     │
+Fetch API
+     │
+Store in Redux
+     │
+Store Offline
+
+Analytics
+     │
+Fetch API
+     │
+Show Statistics
+
+Profile
+     │
+Read Redux
+     │
+Display User
+
+Settings
+     │
+Logout
+     │
+Clear AsyncStorage
+Clear Redux
+     │
+Back to Login
