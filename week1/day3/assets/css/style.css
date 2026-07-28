@@ -1,0 +1,102 @@
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+
+    font-family:Arial, Helvetica, sans-serif;
+
+    background:#f4f4f4;
+
+    padding:20px;
+
+}
+
+.content-header{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    margin-bottom:20px;
+
+}
+/* Group that holds Refresh and Performance buttons */
+.content-header div{
+
+    display:flex;
+
+    gap:10px;
+
+}
+.content-header button{
+
+    padding:10px 18px;
+
+    border:none;
+
+    border-radius:8px;
+
+    background:#2563eb;
+
+    color:white;
+
+    cursor:pointer;
+
+    margin-left:10px;
+
+    transition:.3s;
+
+}
+
+.content-header button:hover{
+
+    background:#1d4ed8;
+
+}
+
+.dashboard-container{
+
+    display:grid;
+
+    gap:20px;
+
+}
+
+.charts-grid{
+
+    display:grid;
+
+    grid-template-columns:repeat(2,1fr);
+
+    gap:20px;
+
+}
+
+.chart-container{
+
+    background:white;
+
+    border-radius:10px;
+
+    padding:20px;
+
+    box-shadow:0 5px 12px rgba(0,0,0,.1);
+
+    height:350px;
+
+}
+
+.performance-panel{
+
+    background:white;
+
+    padding:20px;
+
+    border-radius:10px;
+
+}
