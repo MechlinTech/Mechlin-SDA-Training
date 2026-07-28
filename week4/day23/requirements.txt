@@ -1,0 +1,10 @@
+openai
+transformers
+torch
+flask
+requests
+accelerate
+sentencepiece
+tokenizers
+numpy
+pandas
