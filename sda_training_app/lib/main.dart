@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 
 import 'providers/auth_provider.dart';
 import 'providers/analytics_provider.dart';
+import 'providers/api_provider.dart';
 import 'screens/dashboard_screen.dart';
 import 'services/notification_service.dart';
 
@@ -27,6 +28,9 @@ class MyApp extends StatelessWidget {
         ),
         ChangeNotifierProvider(
           create: (_) => AnalyticsProvider(),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => ApiProvider()..initialize(),
         ),
       ],
       child: MaterialApp(

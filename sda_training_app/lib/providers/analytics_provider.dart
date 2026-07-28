@@ -8,7 +8,7 @@ import '../services/notification_service.dart';
 
 class AnalyticsProvider extends ChangeNotifier {
   final ApiService _apiService = ApiService();
-  final OfflineService _offlineService = OfflineService();
+  final OfflineService _offlineService = OfflineService.instance;
 
   Analytics? analytics;
 
@@ -25,9 +25,9 @@ class AnalyticsProvider extends ChangeNotifier {
     notifyListeners();
 
     try {
-      final connectivity = await Connectivity().checkConnectivity();
+      final connectivityResult = await Connectivity().checkConnectivity();
 
-      if (connectivity.contains(ConnectivityResult.none)) {
+      if (connectivityResult.contains(ConnectivityResult.none)) {
         isOffline = true;
 
         final cachedUsers = await _offlineService.loadUsers();
