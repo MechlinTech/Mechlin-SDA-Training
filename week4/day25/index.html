@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Web Integration</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f5f5f5;
+            color: #333;
+        }
+
+        header {
+            background: #1f2937;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+
+        header h1 {
+            margin-bottom: 8px;
+        }
+
+        main {
+            width: 95%;
+            max-width: 1400px;
+            margin: 30px auto;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+            gap: 20px;
+        }
+
+        .section {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, .1);
+            min-height: 500px;
+        }
+
+        footer {
+            margin-top: 40px;
+            padding: 20px;
+            text-align: center;
+            color: #666;
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <h1>AI Web Integration Dashboard</h1>
+        <p>Chatbot • Content Generator • Recommendations</p>
+    </header>
+
+    <main>
+
+        <div class="grid">
+
+            <section class="section">
+                <div id="ai-chatbot"></div>
+            </section>
+
+            <section class="section">
+                <div id="ai-content-generator"></div>
+            </section>
+
+            <section class="section">
+                <div id="ai-recommendations"></div>
+            </section>
+
+        </div>
+
+    </main>
+
+    <footer>
+        <p>Week 4 - Day 25 | AI Web Integration Demo</p>
+    </footer>
+
+    <script src="ai/web-components/ai-chatbot.js"></script>
+    <script src="ai/web-components/ai-content-generator.js"></script>
+    <script src="ai/web-components/ai-recommendations.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+
+            const chatbot = new AIChatbot(
+                "ai-chatbot",
+                {
+                    apiUrl: "http://127.0.0.1:5000/api/ai/chat"
+                }
+            );
+
+            const contentGenerator = new AIContentGenerator({
+                container: document.getElementById("ai-content-generator"),
+                apiEndpoint: "http://127.0.0.1:5000/api/ai/generate"
+            });
+
+            const recommendations = new AIRecommendations({
+                container: document.getElementById("ai-recommendations"),
+                apiEndpoint: "http://127.0.0.1:5000/api/ai/recommendations"
+            });
+
+            window.aiDemo = {
+                chatbot,
+                contentGenerator,
+                recommendations
+            };
+
+        });
+
+
+        window.addEventListener("error", (event) => {
+            console.error("Application Error:", event.error);
+        });
+
+
+        window.addEventListener("unhandledrejection", (event) => {
+            console.error("Unhandled Promise Rejection:", event.reason);
+        });
+    </script>
+
+</body>
+
+</html>
