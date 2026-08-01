@@ -1,0 +1,55 @@
+{
+    "success": true,
+    "response": {
+      "summary": "Your workload is manageable with proper prioritization.",
+      "priorityOrder": [
+        {
+          "task": "Fix backend authentication issues",
+          "priority": "High",
+          "estimatedTime": "1.5 Hours"
+        },
+        {
+          "task": "Complete React dashboard",
+          "priority": "High",
+          "estimatedTime": "2 Hours"
+        },
+        {
+          "task": "Prepare Docker configuration",
+          "priority": "Medium",
+          "estimatedTime": "1 Hour"
+        },
+        {
+          "task": "Study Kubernetes",
+          "priority": "Low",
+          "estimatedTime": "1.5 Hours"
+        }
+      ],
+      "productivityTips": [
+        "Complete the most difficult task first.",
+        "Use the Pomodoro technique (25 minutes work, 5 minutes break).",
+        "Avoid multitasking during development.",
+        "Review completed work before moving to the next task.",
+        "Keep notes of blockers for future reference."
+      ],
+      "dailySchedule": [
+        {
+          "time": "09:00 - 10:30",
+          "activity": "Backend Authentication"
+        },
+        {
+          "time": "10:45 - 12:45",
+          "activity": "React Dashboard"
+        },
+        {
+          "time": "01:30 - 02:30",
+          "activity": "Docker Configuration"
+        },
+        {
+          "time": "03:00 - 04:30",
+          "activity": "Kubernetes Learning"
+        }
+      ],
+      "motivation": "Stay consistent. Completing one task at a time is more effective than trying to finish everything simultaneously."
+    },
+    "timestamp": "2026-08-01T10:00:00Z"
+  }
