@@ -1,0 +1,33 @@
+body{
+    background:#f5f7fb;
+}
+
+.card{
+    transition:.3s;
+}
+
+.card:hover{
+
+    transform:translateY(-8px);
+
+    box-shadow:0 15px 35px rgba(0,0,0,.15)!important;
+
+}
+
+.btn{
+
+    border-radius:10px;
+
+}
+
+.form-control{
+
+    border-radius:10px;
+
+}
+
+.card{
+
+    border-radius:18px;
+
+}
