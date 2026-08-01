@@ -19,5 +19,14 @@
     "type": "shell",
     "command": "npm run lint",
     "runOn": "folderOpen"
+  },
+  "[html]": {
+    "editor.defaultFormatter": "vscode.html-language-features"
+  },
+  "[javascript]": {
+    "editor.defaultFormatter": "vscode.typescript-language-features"
+  },
+  "[javascriptreact]": {
+    "editor.defaultFormatter": "vscode.typescript-language-features"
   }
 }

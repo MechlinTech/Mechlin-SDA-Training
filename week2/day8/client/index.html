@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Socket.IO Test Client</title>
+</head>
+<body>
+  <h2>Socket.IO Test Client 🚀</h2>
+
+  <button id="joinBtn">Join Room</button>
+  <button id="userBtn">Send User Update</button>
+  <button id="orderBtn">Send Order Event</button>
+
+  <div id="logs"></div>
+
+  <script src="https://cdn.socket.io/4.8.1/socket.io.min.js"></script>
+
+  <script>
+    const socket = io("http://localhost:3000");
+
+    const logs = document.getElementById("logs");
+
+    function log(message) {
+      const p = document.createElement("p");
+      p.innerText = message;
+      logs.appendChild(p);
+    }
+
+    socket.on("connect", () => {
+      log(`✅ Connected : ${socket.id}`);
+    });
+
+    document.getElementById("joinBtn").onclick = () => {
+      socket.emit("join", "developers");
+      log("Joined developers room");
+    };
+
+    document.getElementById("userBtn").onclick = () => {
+      socket.emit("user:update", {
+        id: 1,
+        name: "Prateek"
+      });
+    };
+
+    document.getElementById("orderBtn").onclick = () => {
+      socket.emit("order:create", {
+        id: "ORD001",
+        amount: 5000
+      });
+    };
+
+    socket.on("user:updated", (data) => {
+      log("👤 User Updated");
+      console.log(data);
+    });
+
+    socket.on("order:created", (data) => {
+      log("📦 Order Created");
+      console.log(data);
+    });
+
+    socket.on("disconnect", () => {
+      log("❌ Disconnected");
+    });
+  </script>
+</body>
+</html>
