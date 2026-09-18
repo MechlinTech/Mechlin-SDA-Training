@@ -1,4 +1,6 @@
-# Day 1: SDLC & GitHub Mastery
+# Day 1: SDLC & GitHub Setup
+
+# Day 1: SDLC & GitHub Documentation
 
 ## 🎯 Learning Objectives
 
@@ -11,6 +13,7 @@
 ## 📚 Theory & Concepts
 
 ### Software Development Life Cycle (SDLC)
+
 - **Planning**: Requirements gathering, feasibility study
 - **Analysis**: System analysis, requirement analysis
 - **Design**: System design, database design, UI/UX design
@@ -20,12 +23,14 @@
 - **Maintenance**: Bug fixes, updates, enhancements
 
 ### Agile Methodology
+
 - **Sprint Planning**: 2-week sprints with defined goals
 - **Daily Standups**: Progress updates and blockers
 - **Sprint Review**: Demo completed features
 - **Retrospective**: Process improvement discussions
 
 ### Git Workflow
+
 - **Feature Branches**: Create branches for each feature
 - **Pull Requests**: Code review before merging
 - **Merge Strategies**: Squash, merge, or rebase
@@ -34,6 +39,7 @@
 ## 🛠️ Hands-on Tasks
 
 ### Task 1: Repository Setup
+
 Create a new repository following these steps:
 
 ```bash
@@ -48,6 +54,7 @@ touch week1/day1/README.md
 ```
 
 ### Task 2: Branching Strategy
+
 Implement a proper branching strategy:
 
 ```bash
@@ -63,6 +70,7 @@ git push -u origin feature/day1-documentation
 ```
 
 ### Task 3: Initial Project Structure
+
 Create the following structure:
 
 ```
@@ -84,28 +92,35 @@ sda-training/
 ```
 
 ### Task 4: GitHub Templates
+
 Create pull request and issue templates:
 
 #### `.github/PULL_REQUEST_TEMPLATE.md`
+
 ```markdown
 ## Description
+
 Brief description of changes
 
 ## Type of Change
+
 - [ ] Bug fix
 - [ ] New feature
 - [ ] Breaking change
 - [ ] Documentation update
 
 ## Testing
+
 - [ ] Unit tests pass
 - [ ] Integration tests pass
 - [ ] Manual testing completed
 
 ## Screenshots
+
 (if applicable)
 
 ## Checklist
+
 - [ ] Code follows style guidelines
 - [ ] Self-review completed
 - [ ] Documentation updated
@@ -113,28 +128,35 @@ Brief description of changes
 ```
 
 #### `.github/ISSUE_TEMPLATE/bug_report.md`
+
 ```markdown
 ## Bug Description
+
 Clear description of the bug
 
 ## Steps to Reproduce
+
 1. Go to '...'
 2. Click on '....'
 3. See error
 
 ## Expected Behavior
+
 What should happen
 
 ## Actual Behavior
+
 What actually happens
 
 ## Environment
+
 - OS: [e.g. Windows 10]
 - Browser: [e.g. Chrome 91]
 - Version: [e.g. 1.0.0]
 ```
 
 ### Task 5: Simulate Collaboration
+
 Practice collaborative development:
 
 ```bash
@@ -160,26 +182,31 @@ git merge feature/day1-documentation
 ## 📝 Documentation Tasks
 
 ### Create Sprint Backlog
+
 Create `week1/day1/docs/sprint-backlog.md`:
 
 ```markdown
 # Sprint 1 Backlog - Week 1
 
 ## Sprint Goal
+
 Establish development workflow and create foundation for advanced frontend development.
 
 ## User Stories
 
 ### Epic 1: Development Environment Setup
+
 - [ ] **US-001**: As a developer, I want to set up Git workflow so that I can collaborate effectively
 - [ ] **US-002**: As a developer, I want to create proper repository structure so that the project is organized
 - [ ] **US-003**: As a developer, I want to establish branching strategy so that features can be developed independently
 
 ### Epic 2: Documentation Standards
+
 - [ ] **US-004**: As a developer, I want to create PR templates so that code reviews are consistent
 - [ ] **US-005**: As a developer, I want to document processes so that team members can follow best practices
 
 ## Acceptance Criteria
+
 - Repository structure is established
 - Branching strategy is implemented
 - PR templates are created
@@ -188,21 +215,25 @@ Establish development workflow and create foundation for advanced frontend devel
 ```
 
 ### Create Architecture Diagram
+
 Create `week1/day1/docs/architecture.md`:
 
 ```markdown
 # Week 1 Architecture
 
 ## System Overview
+
 This week focuses on establishing the foundation for advanced frontend development.
 
 ## Components
+
 - **Repository Structure**: Organized codebase with proper folder hierarchy
 - **Git Workflow**: Feature branch strategy with PR reviews
 - **Documentation**: Comprehensive guides and templates
 - **Development Environment**: VS Code setup with extensions
 
 ## Data Flow
+
 1. Developer creates feature branch
 2. Implements feature with tests
 3. Creates pull request
@@ -211,6 +242,7 @@ This week focuses on establishing the foundation for advanced frontend developme
 6. Deploy to staging environment
 
 ## Technology Stack
+
 - Git for version control
 - GitHub for collaboration
 - Markdown for documentation
@@ -220,6 +252,7 @@ This week focuses on establishing the foundation for advanced frontend developme
 ## 🧪 Testing & Validation
 
 ### Git Workflow Validation
+
 ```bash
 # Verify branch structure
 git branch -a
@@ -232,6 +265,7 @@ git status
 ```
 
 ### Documentation Review
+
 - [ ] All templates are created
 - [ ] Documentation is comprehensive
 - [ ] Architecture diagrams are clear
@@ -245,7 +279,7 @@ By the end of Day 1, you should have:
 ✅ **Git Workflow**: Feature branch strategy implemented  
 ✅ **Templates**: PR and issue templates created  
 ✅ **Documentation**: Comprehensive guides and architecture  
-✅ **Collaboration**: Conflict resolution skills demonstrated  
+✅ **Collaboration**: Conflict resolution skills demonstrated
 
 ## 🔄 Next Steps
 
@@ -264,3 +298,7 @@ By the end of Day 1, you should have:
 ---
 
 **Ready for Day 2? Check out [Day 2: HTML5 & Advanced CSS](../day2/README.md)!** 🚀
+
+## Day 1 Documentation
+
+GitHub workflow and documentation tasks completed.
