@@ -1,0 +1,14 @@
+{
+  "name": "sda-training-day15",
+  "version": "1.0.0",
+  "description": "Day 15 DevOps and Environment Management",
+  "main": "server/index.js",
+  "scripts": {
+    "start": "node server/index.js"
+  },
+  "dependencies": {
+    "mongoose": "^8.18.0",
+    "pg": "^8.16.3",
+    "redis": "^5.8.2"
+  }
+}
