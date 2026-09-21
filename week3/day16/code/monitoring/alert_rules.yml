@@ -1,0 +1,20 @@
+groups:
+  - name: sda-training-alerts
+    rules:
+      - alert: ApplicationDown
+        expr: up{job="app"} == 0
+        for: 1m
+        labels:
+          severity: critical
+        annotations:
+          summary: "Application is down"
+          description: "The SDA Training application is not responding."
+
+      - alert: HighMemoryUsage
+        expr: process_resident_memory_bytes > 500000000
+        for: 2m
+        labels:
+          severity: warning
+        annotations:
+          summary: "High application memory usage"
+          description: "Application memory usage is above 500 MB."
