@@ -1,0 +1,16 @@
+{
+  "name": "sda-training-day16",
+  "version": "1.0.0",
+  "description": "Day 16 Docker and Compose training application",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "node src/index.js",
+    "build": "mkdir -p dist && cp -r src/* dist/",
+    "test": "node --check src/index.js"
+  },
+  "dependencies": {
+    "mongoose": "^8.18.0",
+    "pg": "^8.16.3",
+    "redis": "^5.8.2"
+  }
+}
