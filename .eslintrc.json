@@ -1,0 +1,42 @@
+{
+  "env": {
+    "node": true,
+    "es2021": true,
+    "jest": true
+  },
+  "extends": [
+    "eslint:recommended"
+  ],
+  "parserOptions": {
+    "ecmaVersion": "latest",
+    "sourceType": "module"
+  },
+  "rules": {
+    "no-unused-vars": "warn",
+    "no-console": "off"
+  },
+  "ignorePatterns": [
+    "node_modules/",
+    "week1/",
+    "week2/",
+    "week3/day1/",
+    "week3/day2/",
+    "week3/day3/",
+    "week3/day4/",
+    "week3/day5/",
+    "week3/day6/",
+    "week3/day7/",
+    "week3/day8/",
+    "week3/day9/",
+    "week3/day10/",
+    "week3/day11/",
+    "week3/day12/",
+    "week3/day13/",
+    "week3/day14/",
+    "week3/day15/",
+    "week3/day16/",
+    "week3/day17/",
+    "dist/",
+    "coverage/"
+  ]
+}
