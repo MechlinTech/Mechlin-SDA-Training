@@ -1,0 +1,116 @@
+.connection-status-wrapper {
+  position: relative;
+}
+
+.connection-status {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border: 0;
+  border-radius: 8px;
+  padding: 9px 12px;
+  background: #ffffff;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.connection-status-connected {
+  color: #166534;
+}
+
+.connection-status-partial {
+  color: #92400e;
+}
+
+.connection-status-disconnected {
+  color: #991b1b;
+}
+
+.connection-status-icon {
+  font-size: 12px;
+}
+
+.connection-status-details {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  z-index: 10;
+  width: 240px;
+  padding: 14px;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  background: #ffffff;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+.connection-status-details p {
+  margin: 0 0 8px;
+  font-size: 13px;
+}
+
+.reconnect-button {
+  border: 0;
+  border-radius: 6px;
+  padding: 7px 10px;
+  background: #111827;
+  color: #ffffff;
+  cursor: pointer;
+}
+
+.metrics-card {
+  width: 100%;
+  border: 1px solid #e5e7eb;
+  border-radius: 14px;
+  padding: 20px;
+  background: #ffffff;
+  color: #1f2937;
+  text-align: left;
+  cursor: pointer;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.metrics-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+}
+
+.metrics-card-selected {
+  border-color: #111827;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.08);
+}
+
+.metrics-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: #6b7280;
+  font-size: 14px;
+}
+
+.metrics-card-indicator {
+  font-size: 18px;
+}
+
+.metrics-card-value {
+  margin-top: 12px;
+  font-size: 30px;
+  font-weight: 700;
+}
+
+.metrics-card-change {
+  margin-top: 8px;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.metrics-card-change.positive {
+  color: #15803d;
+}
+
+.metrics-card-change.negative {
+  color: #b91c1c;
+}
