@@ -6,7 +6,6 @@
  */
 
 const fs = require('fs');
-const path = require('path');
 
 console.log('🚀 Setting up Day 1: SDLC & GitHub Mastery...\n');
 

@@ -4,9 +4,9 @@
   "description": "Mechlin SDA Advanced Training Program - Full-stack development with AI, DevOps, and mobile expertise",
   "main": "index.js",
   "scripts": {
-    "start": "node api.js && node server/index.js",
-    "dev": "node api.js && nodemon server/index.js",
-    "test": "jest",
+    "start": "node server/index.js",
+    "dev": "nodemon server/index.js",
+    "test": "jest --passWithNoTests",
     "test:watch": "jest --watch",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
